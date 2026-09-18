@@ -64,7 +64,7 @@ Always read the screenshot (`--out`); the visible-text sample is a hint, not pro
 
 ## Requirements
 
-The `runtime` extra (`uv tool install 'ignition-gen-sdk[runtime]'`, or
+The `runtime` extra (`uv tool install 'ignition-gen-sdk[runtime] @ git+https://github.com/WRRooney/ignition-gen-sdk'`, or
 `pip install -e '.[runtime]'` from a checkout) and `playwright install chrome`
 (uses the system Chrome channel). Exit 2 when absent. Core logic lives in
 `ignition_gen_sdk.validation.runtime` (`validate`, `verdict`, `warnings`).

@@ -5,7 +5,7 @@ agents: Claude Code, Codex, Gemini CLI, Cursor, OpenCode, or anything that reads
 [Agent Skills](https://agentskills.io) `SKILL.md` format.
 
 The skills teach an agent to author tags, UDTs, Perspective views and other project
-resources through the [ignition-gen-sdk](https://github.com/wrooney/ignition-gen-sdk) `ign` CLI,
+resources through the [ignition-gen-sdk](https://github.com/WRRooney/ignition-gen-sdk) `ign` CLI,
 to call the gateway HTTP API without leaking the token, to inspect gateway config, and to
 grow project-specific knowledge in the user's own repo instead of in the plugin.
 
@@ -29,7 +29,7 @@ Each skill is a short `SKILL.md` plus `references/*.md` the agent loads only whe
 
 ## Install
 
-Requires the SDK first: `uv tool install ignition-gen-sdk` (or `pip install ignition-gen-sdk`).
+Requires the SDK first: `uv tool install git+https://github.com/WRRooney/ignition-gen-sdk` (or `pip install git+https://github.com/WRRooney/ignition-gen-sdk`).
 
 **Claude Code (plugin)**
 

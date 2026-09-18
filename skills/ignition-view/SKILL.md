@@ -253,7 +253,7 @@ real bug) or a "View Not Found" placeholder; exit 0 with warnings on
 `quality_error_overlays` (bad tag quality), console errors, and `symbol_svg_empty`.
 Read the screenshot. A `page list` URL maps to `--page` by dropping the slash; the
 root page is `--project` with no `--page`. Requires the `runtime` extra
-(`uv tool install 'ignition-gen-sdk[runtime]'`) and `playwright install chrome`
+(`uv tool install 'ignition-gen-sdk[runtime] @ git+https://github.com/WRRooney/ignition-gen-sdk'`) and `playwright install chrome`
 (exit 2 otherwise).
 
 Blind spots: view `onStartup` never completes headlessly, the session is anonymous

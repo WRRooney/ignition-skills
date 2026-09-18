@@ -13,8 +13,8 @@ Getting from "a user has an Ignition 8.3 gateway" to "the agent can run `ign` ve
 ## 1. Install
 
 ```bash
-uv tool install ignition-gen-sdk    # preferred: isolated, puts `ign` on PATH
-pip install ignition-gen-sdk        # alternative
+uv tool install git+https://github.com/WRRooney/ignition-gen-sdk    # preferred: isolated, puts `ign` on PATH
+pip install git+https://github.com/WRRooney/ignition-gen-sdk        # alternative
 ign --help                      # confirms the entry point
 ```
 
@@ -25,7 +25,7 @@ Python 3.12+ is required. The base install covers every verb, including the type
 | `strict` | `ign api --strict` (deep OpenAPI validation of body, query and path params) |
 | `runtime` | `ign view validate` (headless render of a Perspective page); also run `playwright install chrome` |
 
-Add them when a verb asks (`uv tool install 'ignition-gen-sdk[strict,runtime]'`). If `ign` is not on PATH in the agent's shell, `python3 -m ignition_gen_sdk.cli <verb> ...` is the equivalent invocation.
+Add them when a verb asks (`uv tool install 'ignition-gen-sdk[strict,runtime] @ git+https://github.com/WRRooney/ignition-gen-sdk'`). If `ign` is not on PATH in the agent's shell, `python3 -m ignition_gen_sdk.cli <verb> ...` is the equivalent invocation.
 
 ## 2. Configure the environment
 
