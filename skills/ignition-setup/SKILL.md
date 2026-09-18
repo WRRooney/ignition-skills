@@ -12,20 +12,24 @@ Getting from "a user has an Ignition 8.3 gateway" to "the agent can run `ign` ve
 
 ## 1. Install
 
+Check first: if `ign --help` works, skip to step 2. Otherwise install it:
+
 ```bash
 uv tool install git+https://github.com/WRRooney/ignition-gen-sdk    # preferred: isolated, puts `ign` on PATH
-pip install git+https://github.com/WRRooney/ignition-gen-sdk        # alternative
+pip install git+https://github.com/WRRooney/ignition-gen-sdk        # alternative when uv is unavailable
 ign --help                      # confirms the entry point
 ```
 
-Python 3.12+ is required. The base install covers every verb, including the typed resource verbs (`provider`, `db-conn`, `alarm-journal`, `driver`): the OpenAPI client generator is a core dependency, and the first typed verb fetches the gateway's spec to `.ign/openapi.json` and generates the client by itself (a few seconds, one-time "Generating API client" line on stderr). Two optional extras remain:
+Python 3.12+ is required. `uv` downloads a matching Python if the machine lacks one; `pip` needs it installed already. If the machine has neither `uv` nor Python 3.12+, ask the user to install `uv` (https://docs.astral.sh/uv/) rather than installing it yourself. If `ign` installed but is not found, `uv tool dir --bin` prints where it went: run it by full path, or `uv tool update-shell` and restart the shell. After a `pip` install, `python3 -m ignition_gen_sdk.cli <verb> ...` is the equivalent invocation.
+
+The base install covers every verb, including the typed resource verbs (`provider`, `db-conn`, `alarm-journal`, `driver`): the OpenAPI client generator is a core dependency, and the first typed verb fetches the gateway's spec to `.ign/openapi.json` and generates the client by itself (a few seconds, one-time "Generating API client" line on stderr). Two optional extras remain:
 
 | Extra | Needed for |
 |---|---|
 | `strict` | `ign api --strict` (deep OpenAPI validation of body, query and path params) |
 | `runtime` | `ign view validate` (headless render of a Perspective page); also run `playwright install chrome` |
 
-Add them when a verb asks (`uv tool install 'ignition-gen-sdk[strict,runtime] @ git+https://github.com/WRRooney/ignition-gen-sdk'`). If `ign` is not on PATH in the agent's shell, `python3 -m ignition_gen_sdk.cli <verb> ...` is the equivalent invocation.
+Add them when a verb asks (`uv tool install 'ignition-gen-sdk[strict,runtime] @ git+https://github.com/WRRooney/ignition-gen-sdk'`).
 
 ## 2. Configure the environment
 

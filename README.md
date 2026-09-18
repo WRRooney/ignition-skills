@@ -34,7 +34,7 @@ Requires the SDK first: `uv tool install git+https://github.com/WRRooney/ignitio
 **Claude Code (plugin)**
 
 ```
-/plugin marketplace add wrooney/ignition-skills
+/plugin marketplace add WRRooney/ignition-skills
 /plugin install ignition@ignition-skills
 ```
 
