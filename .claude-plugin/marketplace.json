@@ -1,0 +1,11 @@
+{
+  "name": "ignition-skills",
+  "owner": { "name": "Will Rooney" },
+  "plugins": [
+    {
+      "name": "ignition",
+      "source": "./",
+      "description": "Skills for building Ignition 8.3 projects with the ignition-gen-sdk `ign` CLI."
+    }
+  ]
+}

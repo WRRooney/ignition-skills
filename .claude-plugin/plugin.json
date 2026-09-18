@@ -1,0 +1,8 @@
+{
+  "name": "ignition",
+  "version": "0.1.0",
+  "description": "Agent skills for Inductive Automation Ignition 8.3: author tags, UDTs and Perspective views through the ignition-gen-sdk `ign` CLI, call the gateway API safely, and inspect gateway config.",
+  "author": { "name": "Will Rooney" },
+  "license": "Apache-2.0",
+  "keywords": ["ignition", "scada", "perspective", "inductive-automation", "sdk"]
+}

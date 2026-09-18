@@ -1,0 +1,11 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/check_skills.py
+      - run: python3 hosts/claude-code/hooks/test_hook.py
+      - run: sh -n install.sh
+      - run: python3 -c "import json; [json.load(open(p)) for p in ('.claude-plugin/plugin.json', '.claude-plugin/marketplace.json', 'hosts/claude-code/settings.example.json')]"

@@ -1,0 +1,8 @@
+---
+description: Ignition 8.3 gateway work through the ignition-gen-sdk `ign` CLI
+alwaysApply: false
+globs: ["config/resources/**", "projects/**", ".ign_tools/**"]
+---
+Read `.agents/skills/ignition-setup/SKILL.md` before touching gateway files. Only the `ign`
+CLI writes `config/resources/**` and `projects/**`. Never call the gateway with curl.
+Project-specific learnings go in `.agents/skills/ignition-local/`.
