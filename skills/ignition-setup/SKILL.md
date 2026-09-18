@@ -38,7 +38,7 @@ Add them when a verb asks (`uv tool install 'ignition-gen-sdk[strict,runtime] @ 
 | Variable | Required | Meaning |
 |---|---|---|
 | `IGNITION_URL` | yes | Gateway base URL, e.g. `http://localhost:8088`. From a host shell use the host-mapped port, not a container-internal hostname. |
-| `IGNITION_API_TOKEN` | yes | The full `<name>:<secret>` header value from the gateway's API Tokens page. Both halves; `ign` refuses a bare secret. |
+| `IGNITION_API_TOKEN` | yes | The full `<name>:<secret>` value shown once when the API key is created (step 3). Both halves; `ign` refuses a bare secret. |
 | `IGNITION_DATA_DIR` | for disk writes | Gateway data directory, the one containing `config/resources/` and `projects/`. Unset means the current directory. |
 | `IGNITION_PROJECT` | no | Default Perspective project (`Global`). |
 | `IGNITION_TAG_PROVIDER` | no | Default tag provider (`default`). |
@@ -63,17 +63,21 @@ Add both to the project's `.gitignore` before anything else:
 
 See `references/env-contract.md` for the full variable list and resolution rules.
 
-## 3. Create the API token in the gateway
+## 3. Create the API key in the gateway
 
-The agent cannot do this step; the user does it in the gateway web UI. Walk them through it:
+The agent cannot do this step; the user does it in the gateway web UI, signed in as an administrator. Walk them through all four parts. A key created with the defaults alone fails: it cannot write (403), and on a plain `http://` gateway it is refused outright (401).
 
-1. Open the gateway web UI and sign in as an administrator.
-2. Go to the Config section, then Security, then API Tokens.
-3. Create a token. Give it a name (for example `agent`) and grant the permissions the work needs (tag import/export, resource read and write, project read and write, scan).
-4. Copy the secret when it is shown. The gateway shows it once.
-5. Put `<name>:<secret>` into `IGNITION_API_TOKEN`.
+1. **Create a security level for the key.** Go to Platform > Security > Levels and add a level, for example `ApiWrite`. Where it sits in the tree does not matter (it does not need to be under Authenticated); what matters is that the same level is assigned to the key (part 3) and checked in Gateway Write Permissions (part 2).
+2. **Give that level write access.** Go to Platform > Security > General Settings. Under Gateway Write Permissions, check `ApiWrite`, keep the levels already checked there (so administrators keep write access), and choose "AnyOf" (match at least one). Save. Write access includes read access.
+3. **Create the key.** Go to Platform > Security > API Keys and click Create API Key +:
+   - API Key Type: Basic Token.
+   - Name: for example `agent`. The name becomes the first half of the token.
+   - Require secure connections for API Keys: leave it on when `IGNITION_URL` is `https://`. Turn it off when the gateway is reached over plain `http://` (typical for a local or dev gateway), or every call returns 401.
+   - Security levels: Authenticated is preselected and cannot be removed. Also check `ApiWrite`.
+   - Save.
+4. **Copy the key right away.** The gateway shows it only once and cannot show it again; if it is lost, delete the key and create a new one. Copy the whole value exactly as shown: it starts with the key name and a colon (`agent:...`). Put it in `.env` as `IGNITION_API_TOKEN=agent:...`.
 
-Never ask the user to paste the token into chat. Ask them to write it into `.env` themselves, or to export it in the shell that launches the agent.
+Never ask the user to paste the key into chat. Ask them to write it into `.env` themselves, or to export it in the shell that launches the agent.
 
 ## 4. Verify
 
@@ -91,8 +95,8 @@ Error output follows one contract: an `Error:` line plus a `Hint:` line on stder
 
 | Output | Meaning | Fix |
 |---|---|---|
-| `Auth error` | token missing or malformed | `.env` not in cwd, or token is not `name:secret` |
-| `Permission error` | 403 | token lacks a scope; edit the token in the gateway UI |
+| `Auth error` | 401: token missing, malformed or refused | `.env` not in cwd; token is not the full `name:secret`; or the key requires secure connections while `IGNITION_URL` is `http://` (step 3) |
+| `Permission error` | 403: the key cannot write | the key's security level is not in Gateway Write Permissions, or the key lacks that level (step 3, parts 1 to 3) |
 | `Network error` | cannot reach `IGNITION_URL` (also fails the first-run spec fetch) | wrong port or container-internal hostname used from the host |
 | `Path error` | path not in the cached spec | check `.ign/api_reference/INDEX.md`; `ign openapi fetch` if the gateway was upgraded |
 
@@ -147,6 +151,7 @@ Full text with rationale: `references/hard-rules.md`.
 ```
 [ ] ign --help works (or python3 -m ignition_gen_sdk.cli)
 [ ] .env present in cwd with IGNITION_URL + IGNITION_API_TOKEN (name:secret)
+[ ] API key has a security level listed in Gateway Write Permissions; secure connections off if IGNITION_URL is http://
 [ ] .env and .ign/ gitignored
 [ ] ign api GET /data/api/v1/gateway-info answers (spec fetched to .ign/openapi.json)
 [ ] ign provider names lists providers (client generated)

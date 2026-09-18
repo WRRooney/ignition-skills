@@ -56,8 +56,8 @@ Everything below runs before any network call:
    `iv`, `protected`, `tag` is rejected as a `Payload error`. Encrypted
    credentials are set in the Gateway web UI, never constructed by tooling.
 3. Settings load. A missing or malformed `IGNITION_API_TOKEN` is an `Auth error`.
-   The token is the full header value `<name>:<secret>` as shown on the
-   gateway's API Tokens page.
+   The token is the full header value `<name>:<secret>` as shown once
+   when the API key is created (Platform > Security > API Keys).
 4. Path resolver: method and path are checked against the spec at
    `.ign/openapi.json`. If the file is missing it is fetched from the gateway
    on the spot (a few seconds); no prior `ign openapi fetch` is needed.
