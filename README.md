@@ -1,7 +1,7 @@
 # ignition-skills
 
 Agent skills for building **Inductive Automation Ignition 8.3** projects with AI coding
-agents: Claude Code, Codex, Gemini CLI, Cursor, OpenCode, or anything that reads the
+agents: Claude Code, Codex, Gemini CLI, Cursor, OpenCode, Hermes Agent, or anything that reads the
 [Agent Skills](https://agentskills.io) `SKILL.md` format.
 
 The skills teach an agent to author tags, UDTs, Perspective views and other project
@@ -48,6 +48,7 @@ or for a checkout: `claude --plugin-dir /path/to/ignition-skills`.
 ./install.sh --host gemini    --project /path/to/gateway-data
 ./install.sh --host cursor    --project /path/to/gateway-data
 ./install.sh --host opencode  --project /path/to/gateway-data
+./install.sh --host hermes    --project /path/to/gateway-data --hook
 ```
 
 The installer copies the skills to `<project>/.agents/skills/` and symlinks them into the
@@ -56,12 +57,33 @@ host's skills directory (`--dir` overrides it). It also creates an empty
 other than Claude Code get a snippet to append to `AGENTS.md`/`GEMINI.md`/Cursor rules;
 see `hosts/`.
 
+**Hermes Agent**
+
+Hermes discovers `<project>/.agents/skills/` on its own, so `--host hermes` installs there without
+symlinks; project skills stay unloaded until you run `hermes skills trust` once inside the project.
+Two other ways to use the skills with Hermes, without a project install:
+
+```bash
+hermes skills tap add WRRooney/ignition-skills   # browse/install from this repo as a tap
+```
+
+or add a checkout's `skills/` to `skills.external_dirs` in `~/.hermes/config.yaml`. Either way,
+`ignition-setup` creates `.agents/skills/ignition-local/` in the data dir on first use.
+
 ## Guard rails (opt in)
 
 `--hook` for Claude Code copies a PreToolUse hook that blocks shell writes to
 `config/resources/**` and `projects/**`, and `hosts/claude-code/settings.example.json`
 adds matching `deny` rules for the Write/Edit tools. Together they make `ign` the only
-writer of gateway files. Other hosts get the rule as text only.
+writer of gateway files.
+
+`--hook` for Hermes copies the same script to `$HERMES_HOME/agent-hooks/` (default
+`~/.hermes/agent-hooks/`); merge `hosts/hermes/config.example.yaml` into
+`~/.hermes/config.yaml`. It runs as a fail-closed `pre_tool_call` hook on `terminal`,
+`execute_code`, `write_file` and `patch`. Hermes hooks are global, so the script guards relative
+`config/resources/` and `projects/` only when the session's cwd is the gateway data dir (or a
+workspace with `.agents/skills/ignition-setup/` or `IGNITION_*` in `.env`), and
+`$IGNITION_DATA_DIR`'s trees from anywhere. Other hosts get the rule as text only.
 
 ## How the skills evolve
 

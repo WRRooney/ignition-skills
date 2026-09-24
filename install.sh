@@ -1,11 +1,12 @@
 #!/usr/bin/env sh
 # Install ignition-skills into a project for one agent host.
 #
-#   install.sh --host claude-code|codex|gemini|cursor|opencode [--project DIR] [--hook] [--dir SKILLS_DIR]
+#   install.sh --host claude-code|codex|gemini|cursor|opencode|hermes [--project DIR] [--hook] [--dir SKILLS_DIR]
 #
 # Skills are copied ONCE into <project>/.agents/skills/ (the neutral, tool-independent
 # location) and then symlinked into the host's own skills directory. --dir overrides
-# that host directory when your host reads skills from somewhere else.
+# that host directory when your host reads skills from somewhere else. Hermes reads
+# .agents/skills/ directly, so it gets no symlinks.
 set -eu
 
 HERE=$(cd "$(dirname "$0")" && pwd)
@@ -28,6 +29,7 @@ case "$HOST" in
   gemini)      DEFAULT_DIR=".gemini/skills" ;;
   cursor)      DEFAULT_DIR=".cursor/skills" ;;
   opencode)    DEFAULT_DIR=".opencode/skills" ;;
+  hermes)      DEFAULT_DIR=".agents/skills" ;;
   *) echo "unknown host: $HOST" >&2; exit 2 ;;
 esac
 HOSTDIR=${HOSTDIR:-$DEFAULT_DIR}
@@ -35,6 +37,7 @@ HOSTDIR=${HOSTDIR:-$DEFAULT_DIR}
 NEUTRAL="$PROJECT/.agents/skills"
 mkdir -p "$NEUTRAL" "$PROJECT/$HOSTDIR"
 link() {  # link NAME: symlink $NEUTRAL/NAME into the host dir; never clobber a real directory
+  [ "$PROJECT/$HOSTDIR" -ef "$NEUTRAL" ] && return 0  # host reads the neutral dir itself
   target="$PROJECT/$HOSTDIR/$1"
   if [ -d "$target" ] && [ ! -L "$target" ]; then
     echo "skip: $target is a real directory (your own skill?); remove it to install the shared one" >&2
@@ -73,6 +76,17 @@ case "$HOST" in
       echo "Now merge hosts/claude-code/settings.example.json into $PROJECT/.claude/settings.json."
     fi ;;
   codex|opencode) echo "Append hosts/$HOST/AGENTS.snippet.md to $PROJECT/AGENTS.md" ;;
+  hermes)
+    echo "Append hosts/hermes/AGENTS.snippet.md to $PROJECT/AGENTS.md (or .hermes.md if the project has one: Hermes loads only the first it finds)"
+    echo "Then run \`hermes skills trust\` inside $PROJECT once; project skills stay unloaded until trusted."
+    if [ "$HOOK" = 1 ]; then
+      HOOKDIR="${HERMES_HOME:-$HOME/.hermes}/agent-hooks"
+      mkdir -p "$HOOKDIR"
+      cp "$HERE/hosts/claude-code/hooks/block_ignition_disk_writes.py" "$HOOKDIR/"
+      chmod +x "$HOOKDIR/block_ignition_disk_writes.py"
+      echo "hook: $HOOKDIR/block_ignition_disk_writes.py"
+      echo "Now merge hosts/hermes/config.example.yaml into ${HERMES_HOME:-$HOME/.hermes}/config.yaml."
+    fi ;;
   gemini)         echo "Append hosts/gemini/GEMINI.snippet.md to $PROJECT/GEMINI.md" ;;
   cursor)         mkdir -p "$PROJECT/.cursor/rules" && cp "$HERE/hosts/cursor/ignition.mdc" "$PROJECT/.cursor/rules/" && echo "rule: $PROJECT/.cursor/rules/ignition.mdc" ;;
 esac

@@ -1,0 +1,11 @@
+# Optional guard rail. Merge into ~/.hermes/config.yaml after `install.sh --host hermes --hook`.
+# Hermes hooks are global: relative config/resources/ and projects/ are guarded only when cwd is
+# the gateway data dir (or has .agents/skills/ignition-setup/ or IGNITION_* in .env);
+# $IGNITION_DATA_DIR's trees are guarded from any cwd.
+# Hermes asks for consent on first use; non-interactive runs need --accept-hooks or HERMES_ACCEPT_HOOKS=1.
+hooks:
+  pre_tool_call:
+    - matcher: "terminal|execute_code|write_file|patch"
+      command: "~/.hermes/agent-hooks/block_ignition_disk_writes.py"
+      timeout: 10
+      fail_closed: true
