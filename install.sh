@@ -5,7 +5,8 @@
 #
 # Skills are copied ONCE into <project>/.agents/skills/ (the neutral, tool-independent
 # location) and then symlinked into the host's own skills directory. --dir overrides
-# that host directory when your host reads skills from somewhere else. Hermes reads
+# that host directory when your host reads skills from somewhere else.
+# --hook turns on the write guard (same as `guardrails.py on`; see skills/ignition-guardrails). Hermes reads
 # .agents/skills/ directly, so it gets no symlinks.
 set -eu
 
@@ -69,24 +70,12 @@ echo "skills: $NEUTRAL -> $PROJECT/$HOSTDIR"
 
 case "$HOST" in
   claude-code)
-    if [ "$HOOK" = 1 ]; then
-      mkdir -p "$PROJECT/.claude/hooks"
-      cp "$HERE/hosts/claude-code/hooks/block_ignition_disk_writes.py" "$PROJECT/.claude/hooks/"
-      echo "hook: $PROJECT/.claude/hooks/block_ignition_disk_writes.py"
-      echo "Now merge hosts/claude-code/settings.example.json into $PROJECT/.claude/settings.json."
-    fi ;;
+    [ "$HOOK" = 1 ] && python3 "$HERE/skills/ignition-guardrails/guardrails.py" on --host claude-code --project "$PROJECT" ;;
   codex|opencode) echo "Append hosts/$HOST/AGENTS.snippet.md to $PROJECT/AGENTS.md" ;;
   hermes)
     echo "Append hosts/hermes/AGENTS.snippet.md to $PROJECT/AGENTS.md (or .hermes.md if the project has one: Hermes loads only the first it finds)"
     echo "Then run \`hermes skills trust\` inside $PROJECT once; project skills stay unloaded until trusted."
-    if [ "$HOOK" = 1 ]; then
-      HOOKDIR="${HERMES_HOME:-$HOME/.hermes}/agent-hooks"
-      mkdir -p "$HOOKDIR"
-      cp "$HERE/hosts/claude-code/hooks/block_ignition_disk_writes.py" "$HOOKDIR/"
-      chmod +x "$HOOKDIR/block_ignition_disk_writes.py"
-      echo "hook: $HOOKDIR/block_ignition_disk_writes.py"
-      echo "Now merge hosts/hermes/config.example.yaml into ${HERMES_HOME:-$HOME/.hermes}/config.yaml."
-    fi ;;
+    [ "$HOOK" = 1 ] && python3 "$HERE/skills/ignition-guardrails/guardrails.py" on --host hermes ;;
   gemini)         echo "Append hosts/gemini/GEMINI.snippet.md to $PROJECT/GEMINI.md" ;;
   cursor)         mkdir -p "$PROJECT/.cursor/rules" && cp "$HERE/hosts/cursor/ignition.mdc" "$PROJECT/.cursor/rules/" && echo "rule: $PROJECT/.cursor/rules/ignition.mdc" ;;
 esac

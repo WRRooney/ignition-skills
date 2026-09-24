@@ -1,5 +1,5 @@
 {
-  "_comment": "Optional guard rails for a gateway data-dir checkout. Merge into .claude/settings.json (project) after `install.sh --host claude-code --hook`.",
+  "_comment": "What `guardrails.py on --host claude-code` adds to .claude/settings.json; merge by hand if you prefer.",
   "permissions": {
     "deny": [
       "Write(config/resources/**)",

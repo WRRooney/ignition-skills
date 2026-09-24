@@ -1,4 +1,4 @@
-"""Run: python3 hosts/claude-code/hooks/test_hook.py  (exit 0 = every case behaves)."""
+"""Run: python3 skills/ignition-guardrails/test_hook.py  (exit 0 = every case behaves)."""
 from __future__ import annotations
 
 import json

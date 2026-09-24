@@ -55,7 +55,7 @@ def main() -> int:
     for path in sorted(list((ROOT / "skills").rglob("*.md")) + list((ROOT / "docs").rglob("*.md"))):
         rel = path.relative_to(ROOT).as_posix()
         text = path.read_text(encoding="utf-8")
-        for m in re.finditer(r"\bClaude\b", text):
+        for m in re.finditer(r"\bClaude\b(?! Code)", text):  # the host name is fine; "Claude does X" is not
             line = text.count("\n", 0, m.start()) + 1
             problems.append(f"{rel}:{line}: host-specific term 'Claude'; keep skills host-neutral")
     for p in problems:

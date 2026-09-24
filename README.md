@@ -48,10 +48,14 @@ snippet to `AGENTS.md` or running `hermes skills trust`.
 
 ## Guard rails (optional)
 
-Add `--hook` to the install command on Claude Code or Hermes to install a hook that blocks
-direct writes to `config/resources/**` and `projects/**`, so `ign` stays the only writer of
-gateway files. The installer prints the one settings file to merge afterwards
-(`hosts/claude-code/settings.example.json` or `hosts/hermes/config.example.yaml`).
+A hook that blocks direct writes to `config/resources/**` and `projects/**`, so `ign` stays
+the only writer of gateway files. Turn it on or off any time (Claude Code and Hermes):
+
+```bash
+python3 .agents/skills/ignition-guardrails/guardrails.py on     # or: off, status
+```
+
+`install.sh --hook` does the same during install.
 
 ## Skills
 
@@ -66,6 +70,7 @@ gateway files. The installer prints the one settings file to merge afterwards
 | `ignition-component` | The `ia.*` component inventory and valid icon glyphs |
 | `ignition-manifest` | Push manifests and `ign diff` for idempotent writes |
 | `ignition-disk` | Read-only inspection of `config/resources/` and `projects/`, scans |
+| `ignition-guardrails` | Turn the write guard on or off for the current host |
 | `skill-learn` | Fold the user's hand-edits of generated work into the project's local skill |
 
 Each skill is a short `SKILL.md` plus `references/*.md` loaded only when needed.

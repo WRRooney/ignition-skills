@@ -1,4 +1,4 @@
-# Optional guard rail. Merge into ~/.hermes/config.yaml after `install.sh --host hermes --hook`.
+# What `guardrails.py on --host hermes` adds to ~/.hermes/config.yaml; merge by hand if you prefer.
 # Hermes hooks are global: relative config/resources/ and projects/ are guarded only when cwd is
 # the gateway data dir (or has .agents/skills/ignition-setup/ or IGNITION_* in .env);
 # $IGNITION_DATA_DIR's trees are guarded from any cwd.
