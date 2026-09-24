@@ -11,15 +11,10 @@ knowledge in your own repo.
 
 ## Quick start
 
-1. Install the SDK:
-
-   ```bash
-   uv tool install git+https://github.com/WRRooney/ignition-gen-sdk
-   ```
-
-2. Install the skills for your agent (see below).
-3. In your gateway data directory, ask the agent to set up `ign`. The `ignition-setup`
-   skill walks it through `.env`, the API token, and a first connection.
+1. Install the skills for your agent (see below).
+2. Open your gateway data directory and ask the agent to set up Ignition. The
+   `ignition-setup` skill installs the `ign` CLI, writes `.env`, walks you through the API
+   token, and verifies the connection.
 
 ## Install
 
