@@ -22,6 +22,8 @@ Nine verbs. Four read, five mutate. Provider resources have no on-disk writer in
 | Bulk delete | `ign provider delete-bulk --entries-file F` |
 | Rename (updates cross-resource references) | `ign provider rename --name N --new-name M` |
 
+`create` and `update` validate the config file locally first: `profile`, `settings`, and the three permission sets (`readPermissions`, `writePermissions`, `editPermissions`, each `{"type": "AnyOf"|"AllOf", "securityLevels": [...]}`; see `../ignition-tag/references/permissions.md` for the tree shape). A malformed set fails with `Error: config file ... is not a valid tag-provider config` before any HTTP call.
+
 `--config-file` and `--entries-file` accept `-` for stdin. No other options exist; do not invent a `--type` shortcut. Surface `ign` output verbatim, including `Error:` and `Hint:` lines. A missing provider on `get`, `update` or `delete` reports `Error: provider 'NAME' not found.`
 
 ## Read-only start

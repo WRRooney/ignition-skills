@@ -163,6 +163,7 @@ For generated tag sets, build with `ignition_gen_sdk.TagBuilder` (`.name().datat
 
 | File | Summary |
 |---|---|
+| `references/permissions.md` | `readPermissions` / `writePermissions` on tags, folders and UDT instances: the security-level tree shape, `PermissionSet.any_of(...)`, how provider sets combine with tag sets |
 | `references/udt-instance-overrides.md` | Three silent instance-override failures: explicit `valueSource`, alarm override replaces, undriven alarm bits |
 | `references/udt-member-inheritance.md` | `typeId` inheritance, which members need `valueSource`, standalone vs member rules, indirect binding forms |
 | `references/udt-scan-merge-semantics.md` | Scan merges additions but refuses kind changes; whole-file edits drop siblings; recovery procedure |

@@ -47,7 +47,7 @@ def main() -> int:
             problems.append(f"{name}: description length {len(fm.get('description', ''))} (want 80..1024)")
         refs_dir = skill_md.parent / "references"
         on_disk = {p.name for p in refs_dir.glob("*.md")} if refs_dir.is_dir() else set()
-        linked = set(re.findall(r"references/([A-Za-z0-9._-]+\.md)", text))
+        linked = set(re.findall(r"(?<![\w/.])references/([A-Za-z0-9._-]+\.md)", text))  # not ../other-skill/references/
         for missing in sorted(on_disk - linked):
             problems.append(f"{name}: references/{missing} exists but SKILL.md never links it")
         for dangling in sorted(linked - on_disk):
