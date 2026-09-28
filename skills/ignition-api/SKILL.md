@@ -143,6 +143,14 @@ a pipeline that fails to deserialize is absent from that list. Format details in
 `references/alarm-pipeline-format.md`; what `system.alarm` scripting can and
 cannot do with rosters and pipelines in `references/alarm-scripting-surface.md`.
 
+## Gateway security: `ign security`
+
+Who may access, read or write the gateway (and open the Designer or create projects) is a
+singleton resource with five permission sets. Read it with `ign security get --paths`; change
+one set with `ign security set-permissions --key writePermissions --any-of APIKey/Write ...`.
+Narrowing `writePermissions` below what the current token holds locks that token out. Details
+and cautions: `references/security-properties.md`.
+
 ## Do not
 
 - Do not echo `IGNITION_API_TOKEN` or `.env` contents, and do not build raw
@@ -158,6 +166,7 @@ cannot do with rosters and pipelines in `references/alarm-scripting-surface.md`.
 
 | File | Summary |
 |---|---|
+| `references/security-properties.md` | `ign security get/set-permissions/update`: the five gateway permission sets, how API-token levels map to them, lockout cautions |
 | `references/http-client-ban.md` | Why curl/wget/httpx/requests are banned for gateway calls |
 | `references/resources-array-body.md` | Resources API wants a JSON array body; element shape; signatures; which read paths answer; live registration |
 | `references/put-projects-full-replace.md` | `PUT /projects/{name}` resets omitted fields; create via `POST /projects`; recovery |
