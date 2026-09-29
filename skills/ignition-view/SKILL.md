@@ -1,6 +1,6 @@
 ---
 name: ignition-view
-description: Use when authoring, editing, validating, or removing Ignition 8.3 Perspective project resources with the `ign` CLI and `ignition_gen_sdk` library. Covers Perspective views (flex/coord/split/tab/breakpoint/column roots, components, bindings, transforms, events), page-config (mount pages, docks, shared docks), session props, project library scripts, style classes, the project stylesheet, themes, named queries, and headless runtime validation. Trigger phrases - "perspective view", "write view", "view.json", "faceplate", "embedded view", "flex repeater", "mount page", "dock", "session prop", "project script", "style class", "stylesheet", "theme", "named query", "validate view", "ign view", "ign page". Do not use for database views, Vision windows, or tags (see ignition-tag).
+description: Use when authoring, editing, validating, or removing Ignition 8.3 Perspective project resources with the `ign` CLI and `ignition_gen_sdk` library. Covers Perspective views (flex/coord/split/tab/breakpoint/column roots, components, bindings, transforms, events), page-config (mount pages, docks, shared docks), session props, project library scripts, event scripts, style classes, the project stylesheet, themes, named queries, and headless runtime validation. Trigger phrases - "perspective view", "write view", "view.json", "faceplate", "embedded view", "flex repeater", "mount page", "dock", "session prop", "project script", "gateway event", "session event", "style class", "stylesheet", "theme", "named query", "validate view", "ign view", "ign page", "ign event". Do not use for database views, Vision windows, or tags (see ignition-tag).
 ---
 
 # Perspective views and project resources with `ign`
@@ -8,7 +8,8 @@ description: Use when authoring, editing, validating, or removing Ignition 8.3 P
 ## When to use
 
 Any change under `projects/<name>/com.inductiveautomation.perspective/**` or
-`projects/<name>/ignition/{script-python,named-query}/**`, plus Perspective themes
+`projects/<name>/ignition/{script-python,named-query}/**`, gateway and session
+event scripts under `projects/<name>/{ignition,com.inductiveautomation.perspective}/<event>/`, plus Perspective themes
 under `config/resources/core/com.inductiveautomation.perspective/themes/`.
 The `ign` CLI (package `ignition_gen_sdk`) wraps every one of these with Pydantic
 validation, a `--dry-run`, and an automatic gateway scan.
@@ -199,6 +200,20 @@ directory holding `code.py` + `resource.json`; package folders carry no
 `resource.json`. Scripts hot-reload for Perspective scope only; gateway-scope
 callers (tag events) keep the old module until restart.
 
+### Gateway and session event scripts
+
+```bash
+ign event kinds                                   # 18 kinds, function signature, settings
+ign event list --project Demo
+ign event write --project Demo --kind gateway.timer --name Poll --file /tmp/poll.py --attr delay=5000
+ign event replace-text --project Demo --kind gateway.update --old readCache --new rebuildCache --expect 1
+ign event delete --project Demo --kind gateway.timer --name Poll
+```
+
+Plain `<function>.py` + `resource.json` in 8.3 (8.1's binary `data.bin` is gone); the
+file must define the Designer's exact signature. Kinds, settings and gotchas:
+`references/event-scripts.md`.
+
 ### Style classes, stylesheet, themes
 
 ```bash
@@ -296,4 +311,5 @@ Load only the file that matches the problem.
 | `references/runtime-validation.md` | What `ign view validate` reports, URL mapping, health sweeps, blind spots |
 | `references/icons.md` | Where 8.3 icon sprites live, `ign icons list`, invalid icon path crashes the component, empty embed path logs the same error |
 | `references/drag-and-drop.md` | Native drag events never fire; simulate with mouse events; `ia.display.tree` has no events |
+| `references/event-scripts.md` | Every gateway and session event kind: folder, function signature, resource.json settings, singleton vs named, which settings `ign event write` requires, update-script cache rebuild |
 | `references/onchange-vs-messages.md` | A property `onChange` clears state before a message handler reads it; never watch transient interaction props |

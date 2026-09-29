@@ -67,6 +67,8 @@ UDTs.
 | Project stylesheet | `com.inductiveautomation.perspective/stylesheet/` | `stylesheet.css`, `resource.json` | `ign stylesheet` |
 | Library scripts | `ignition/script-python/<pkg>/<module>/` | `code.py`, `resource.json` (package dirs have `files: []`) | `ign script` |
 | Named queries | `ignition/named-query/<Path>/` | `query.sql`, `resource.json` (parameters, database, caching live in `attributes`) | `ign named-query` |
+| Gateway event scripts | `ignition/{startup,shutdown,update}/`, `ignition/{timer,tag-change,scheduled,message}/<Name>/` | `<function>.py`, `resource.json` (settings in `attributes`) | `ign event` |
+| Session event scripts | `com.inductiveautomation.perspective/<event>/`, `.../{key-event,message,form-submission-handler}/<Name>/` | `<function>.py`, `resource.json` | `ign event` |
 | Global props | `ignition/global-props/` | gateway-initialized on project creation | none |
 | Alarm pipelines | `com.inductiveautomation.alarm-notification/alarm-pipelines/<Name>/` | `data.bin` (binary), `resource.json` | Designer; `ign alarm-pipeline` for text edits |
 
