@@ -43,7 +43,10 @@ def _cc_paths(project: Path) -> tuple[Path, Path]:
 
 
 def _cc_hook_entry() -> dict:
-    return {"matcher": "Bash", "hooks": [{"type": "command", "command": f"python3 .claude/hooks/{HOOK_NAME}"}]}
+    # $CLAUDE_PROJECT_DIR: a relative path resolves against the shell's cwd, and a hook
+    # that cannot start blocks every Bash call once the agent cds into a subdirectory
+    return {"matcher": "Bash", "hooks": [{"type": "command",
+            "command": f'python3 "$CLAUDE_PROJECT_DIR"/.claude/hooks/{HOOK_NAME}'}]}
 
 
 def _is_our_cc_entry(entry: dict) -> bool:
@@ -60,8 +63,8 @@ def cc_on(project: Path) -> None:
         lst = perms.setdefault(key, [])
         lst.extend(r for r in rules if r not in lst)
     pre = cfg.setdefault("hooks", {}).setdefault("PreToolUse", [])
-    if not any(_is_our_cc_entry(e) for e in pre):
-        pre.append(_cc_hook_entry())
+    # replace rather than skip, so re-running `on` upgrades an old relative-path entry
+    pre[:] = [e for e in pre if not _is_our_cc_entry(e)] + [_cc_hook_entry()]
     settings.parent.mkdir(parents=True, exist_ok=True)
     settings.write_text(json.dumps(cfg, indent=2) + "\n", encoding="utf-8")
     print(f"claude-code: on  ({hook}, {settings})")
