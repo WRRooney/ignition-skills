@@ -4,7 +4,11 @@ The Ignition 8.3 HTTP API exposes exactly two tag endpoints: `GET /data/api/v1/t
 
 ## Recipe
 
-A minimal tag definition imported with `collisionPolicy=Overwrite` sets the value and leaves the rest of the configuration (dataType, readOnly, bindings, parent UDT structure) intact.
+On a UDT member tag, a minimal tag definition imported with `collisionPolicy=Overwrite` sets the value and leaves the rest of the member's configuration (dataType, readOnly, bindings, parent UDT structure) intact, because the member inherits it from the type.
+
+On a standalone tag (not inside a UDT instance) the same minimal body REPLACES the tag's configuration: dataType, event scripts, alarms and custom properties are wiped. For a standalone tag, import the full definition (export it first and change only `value`) or use `MergeOverwrite`.
+
+A value set through `/tags/import` does not fire the tag's `valueChanged` event script. A trigger tag whose script must run has to be written from a session or script (`system.tag.writeBlocking`).
 
 `body.json`:
 
@@ -16,7 +20,7 @@ A minimal tag definition imported with `collisionPolicy=Overwrite` sets the valu
 ign tag import --file body.json --provider default --path Tanks/T01 --collision-policy Overwrite --confirm
 ```
 
-Response: `Import complete: successCount=1 failureCount=0`. `--path` is the parent folder; the tag `name` joins it to form the full path. Verified on UDT member tags (for example self-resetting command booleans inside an instance).
+Response: `Import complete: successCount=1 failureCount=0`. `--path` is the parent folder; the tag `name` joins it to form the full path. Verified on UDT member tags (for example self-resetting command booleans inside an instance); see above for standalone tags.
 
 Before writing inside a UDT instance, export the parent folder first (`ign api GET "/data/api/v1/tags/export?provider=default&path=Tanks%2FT01&recursive=true"`) so the structure can be restored if a fuller definition ever overwrote bindings.
 
