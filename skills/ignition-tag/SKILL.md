@@ -17,7 +17,7 @@ description: |
 | Author UDT instances on disk (replaces the folder's `udts.json`) | `ign tag udt-instance --file F --provider P --path X [--dry-run] [--no-scan]` |
 | Patch one property on members of an existing type file | `ign tag set-udt-member-prop --prop K --value V --provider P --path X [--where K=V] [--dry-run] [--no-scan]` |
 | Patch one property on the type node itself | `ign tag set-udt-type-prop --type NAME --prop K --value V --provider P --path X [--dry-run] [--no-scan]` |
-| Delete a tag, folder or instance directory | `ign tag delete --provider P --path X [--kind instance\|type] [--dry-run] [--no-scan]` |
+| Delete a tag, folder or instance directory | `ign tag delete --provider P --path X [--kind instance\|type] [--name PATTERN]... [--dry-run] [--no-scan]` |
 
 Every option above exists in `--help`; do not invent others. `--provider` defaults to `default` (or `IGNITION_TAG_PROVIDER`). Append `--dry-run` first on anything that writes. Surface `ign`'s stdout and any `Error:` / `Hint:` stderr lines verbatim.
 
@@ -147,9 +147,11 @@ There is no `/tags/write` or `/tags/read` endpoint. A minimal `{name, tagType, v
 ign tag delete --provider default --path Tanks/T01 --dry-run     # prints the directory
 ign tag delete --provider default --path Tanks/T01               # tag-definition dir + scan
 ign tag delete --provider default --path Equipment --kind type   # tag-type-definition dir + scan
+ign tag delete --provider default --path Tanks --name T01        # one tag in the folder, siblings kept
+ign tag delete --provider default --path Tanks --name 'T0*' --name Spare --dry-run   # lists matches
 ```
 
-Removes the whole directory (`tags.json` and/or `udts.json` plus `unary-resource.json`); the gateway drops the tags on the scan. There is no REST delete for tags, so this is the only sanctioned remover. Confirm the path with the user before running without `--dry-run`.
+Without `--name` it removes the whole directory (`tags.json` and/or `udts.json` plus `unary-resource.json`); the gateway drops the tags on the scan. With `--name` it removes only the matching top-level entries of that folder's data files (`*`, `?`, `[...]` wildcards, case-insensitive, repeatable) and leaves every sibling untouched; a file left empty is removed and the folder stays with `"files": []`, the gateway's own shape for a folder that only holds subfolders. Subfolders are directories, not entries: give their path without `--name`. No match exits 1 and writes nothing. There is no REST delete for tags, so this is the only sanctioned remover. Confirm the path with the user before running without `--dry-run`.
 
 ## Reading alarm state through tags
 
