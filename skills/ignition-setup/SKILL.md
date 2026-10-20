@@ -15,9 +15,10 @@ Getting from "a user has an Ignition 8.3 gateway" to "the agent can run `ign` ve
 Check first: if `ign --help` works, skip to step 2. Otherwise install it:
 
 ```bash
-uv tool install git+https://github.com/WRRooney/ignition-gen-sdk    # preferred: isolated, puts `ign` on PATH
-pip install git+https://github.com/WRRooney/ignition-gen-sdk        # alternative when uv is unavailable
+uv tool install ignition-gen-sdk    # preferred: isolated, puts `ign` on PATH
+pip install ignition-gen-sdk        # alternative when uv is unavailable
 ign --help                      # confirms the entry point
+uv tool upgrade ignition-gen-sdk   # later: pull the newest PyPI release
 ```
 
 Python 3.12+ is required. `uv` downloads a matching Python if the machine lacks one; `pip` needs it installed already. If the machine has neither `uv` nor Python 3.12+, ask the user to install `uv` (https://docs.astral.sh/uv/) rather than installing it yourself. If `ign` installed but is not found, `uv tool dir --bin` prints where it went: run it by full path, or `uv tool update-shell` and restart the shell. After a `pip` install, `python3 -m ignition_gen_sdk.cli <verb> ...` is the equivalent invocation.
@@ -29,7 +30,7 @@ The base install covers every verb, including the typed resource verbs (`provide
 | `strict` | `ign api --strict` (deep OpenAPI validation of body, query and path params) |
 | `runtime` | `ign view validate` (headless render of a Perspective page); also run `playwright install chrome` |
 
-Add them when a verb asks (`uv tool install 'ignition-gen-sdk[strict,runtime] @ git+https://github.com/WRRooney/ignition-gen-sdk'`).
+Add them when a verb asks (`uv tool install 'ignition-gen-sdk[strict,runtime]'`).
 
 ## 2. Configure the environment
 
