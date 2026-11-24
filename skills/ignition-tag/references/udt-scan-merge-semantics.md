@@ -15,7 +15,7 @@ ign tag udt-type --provider default --path Equipment --file pump.json   # rewrit
 ign tag import --file instances.json --provider default --path Area1
 ```
 
-Then round-trip: export the type with `ign api GET "/data/api/v1/tags/export?provider=default&path=_types_%2FEquipment&recursive=true&includeUdts=true"` and diff it against the file.
+Then round-trip: export the type with `ign api GET "/data/api/v1/tags/export?provider=default&path=_types_%2FEquipment&recursive=true&includeUdts=true&type=json"` and diff it against the file.
 
 ## Whole-file writes drop siblings
 

@@ -1,6 +1,6 @@
-# `system.util.queryAuditLog` filter behavior (8.3 database profile)
+# `system.util.queryAuditLog` filter behavior (database profile)
 
-Verified against a database-backed audit profile on Ignition 8.3.
+Verified against a database-backed audit profile on a live gateway.
 
 ## Signature and result
 

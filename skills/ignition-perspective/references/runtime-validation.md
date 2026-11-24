@@ -1,7 +1,7 @@
 # Runtime validation with `ign view validate`
 
 Model-valid is not rendered. Views that pass every structural check still fail at
-runtime: an invalid icon path, a nonexistent 8.3 function in an `onStartup`, a
+runtime: an invalid icon path, a nonexistent function in an `onStartup`, a
 dead binding. The only proof is a render.
 
 ## Running it
@@ -16,7 +16,7 @@ ign view validate --url http://gateway:8088/data/perspective/client/Demo/overvie
 
 Perspective renders mounted pages, not raw views, so mount a scratch page first
 (`ign page mount --project Demo --url /probe --view-path Components/PumpFaceplate`),
-validate, then `ign page unmount`. Mount in the project whose client renders it.
+validate, then `ign page unmount` (and `ign view delete` any scratch probe view). Mount in the project whose client renders it.
 The base URL defaults to `IGNITION_URL` (env or `.env`); `--base` overrides it.
 The screenshot defaults to `.ign/validate.png`; `--out` overrides it. No token is needed:
 the Perspective client answers anonymously even when the gateway forces IdP login

@@ -1,31 +1,35 @@
-# 8.3 API correctness
+# Scripting and expression API correctness
 
-Ignition 8.3 restructured much of the scripting and expression API. Code that
-passes model validation can still throw at runtime because a function only ever
-existed in 8.1, or never existed at all. Validate against the 8.3 catalog, not
-memory and not 8.1-era sample projects.
+The scripting and expression API changed substantially from older Ignition versions. Code
+that passes model validation can still throw at runtime because a function only existed in
+an older version, or never existed at all. Validate against the catalog, not memory and not
+sample projects written for older gateways.
 
 ## The catalog and the audit
 
 ```bash
 ign builtins refresh                       # re-crawl docs.inductiveautomation.com into the package catalog
-ign builtins audit --project Demo          # report system.* calls and expression functions absent in 8.3; exit 1 if any
+ign builtins audit --project Demo          # report system.* calls and expression functions absent from the catalog; exit 1 if any
 ign builtins audit --allow cirruslink      # accept a module-provided namespace
 ```
 
 The crawl covers the scripting index completely (every `system.*` function is
 link-listed). Expression functions have a blind spot: inline-documented ones are
 not link-listed, so to settle whether one exists probe its page,
-`.../docs/8.3/appendix/expression-functions/<category>/<fn>`; 404 means absent.
+`.../appendix/expression-functions/<category>/<fn>` in the docs for the gateway's version;
+404 means absent.
 
 The same catalog backs the author-time guards: `bind_expression` rejects unknown
 expression functions; `add_event` and `ign script write` reject unknown
 `system.*` calls. If a real function is flagged, add it to
 `ignition_gen_sdk.validation.ignition_builtins` rather than weakening the guard.
 
-## 8.1 to 8.3 renames that break copied code
+## Legacy names that break copied code
 
-| 8.1 | 8.3 |
+Older code (8.1 and earlier, which most sample projects and training data reflect) uses
+the names on the left.
+
+| Legacy | Current |
 |---|---|
 | `system.db.runQuery`, `runScalarQuery`, `runUpdateQuery`, `runPrepQuery` | `system.db.execQuery`, `execScalar`, `execUpdate`, `execUpdateAsync` |
 | `system.db.clearNamedQueryCache` | `system.db.clearQueryCache` |
@@ -36,13 +40,13 @@ expression functions; `add_event` and `ign script write` reject unknown
 | `system.tag.browseTags` | `system.tag.browse(path, filter).getResults()` |
 | `system.perspective.setSessionProperty` / `getSessionProperty` | never existed; `self.session.custom.*` in component scope |
 
-New namespaces in 8.3 include `system.eventstream`, `system.historian`,
+Newer namespaces include `system.eventstream`, `system.historian`,
 `system.kafka`, `system.secrets`. Installed modules add namespaces the core
 docs do not list (an MQTT module's `system.cirruslink.*`); `ign builtins audit
 --allow <ns>` admits them, and a whitelist must also accept namespaces harvested
 from scripts already running on the gateway.
 
-## Functions that do not exist in 8.3
+## Functions that do not exist
 
 - `system.perspective.getSessionProperty` / `setSessionProperty`. Access the
   session in component scope: `self.session.custom.<path> = v`. A project library
@@ -52,9 +56,9 @@ from scripts already running on the gateway.
 - `system.tag.browseTags` (7.x). Use
   `system.tag.browse(path, {"tagType": "UdtInstance", "recursive": True}).getResults()`;
   each result is dict-like (`r["fullPath"]`, `r.get("typeId")`).
-- `system.db.runQuery` / `runNamedQuery` shapes changed; check the 8.3 db page.
+- `system.db.runQuery` / `runNamedQuery` shapes changed; check the current `system.db` docs.
 - Expression: `contains`, `join`, `length`, `substringAfterLast`, `startsWith`,
-  `addDays`, `secondsBetween`, `randomInt` (see `expression-idioms.md`).
+  `addDays`, `secondsBetween`, `randomInt` (see ignition-perspective `expression-idioms.md`).
 
 ## Nested UDT typeId filters
 
@@ -80,5 +84,5 @@ raises. Convert through `json.loads` or `dict(m)` first.
 ## Logic ported to CPython is not proof
 
 A CPython test of ported logic cannot catch a Jython-only failure or a missing
-8.3 function. Exercise the code from a Perspective view (or the Designer script
+function. Exercise the code from a Perspective view (or the Designer script
 console) and read `ign logs --search <module> --min-level ERROR --stack`.

@@ -4,7 +4,7 @@ An alarm journal profile (`ign alarm-journal create`, `profile.type: DATASOURCE`
 `queryOnly: false`) writes to `alarm_events` and `alarm_event_data` in the named
 database connection. The tables are created on the first event.
 
-## `alarm_events` columns, as stored in 8.3
+## `alarm_events` columns, as stored
 
 | Column | Meaning |
 |---|---|

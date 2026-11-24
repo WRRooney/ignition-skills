@@ -13,9 +13,9 @@ Script bodies (transforms, events, library modules) are Jython, where `==` is co
 - Function names are case-insensitive (`coalesce`, `COALESCE`, `isNull`, `isnull`).
   `system.*` calls in scripts are case-sensitive.
 
-## 8.3 replacements
+## Replacements for missing functions
 
-| Missing in 8.3 | Use |
+| Missing | Use |
 |----------------|-----|
 | `length(s)` | `len(s)` |
 | `contains(s, x)` | `indexOf(s, x) >= 0` (or `containsAny` / `containsAll` for lists) |
@@ -25,7 +25,7 @@ Script bodies (transforms, events, library modules) are Jython, where `==` is co
 | `addDays`, `secondsBetween`, `getYear` | `dateArithmetic`, `dateDiff`, `dateExtract` |
 | `randomInt()` | none; the expression language has no RNG. Sum sines with no common factor for simulated noise |
 
-Verify any doubtful name against the 8.3 catalog (`references/api-8-3-correctness.md`).
+Verify any doubtful name against the catalog (ignition-scripts `api-correctness.md`).
 
 ## Bad-quality guards
 

@@ -71,7 +71,7 @@ back in the element; a stale or empty one is rejected. `ign provider update`,
 | `GET /resources/names/ignition/<type>` | `{"items": [{"name", "enabled", "modes"}], "metadata": {...}}` |
 | `GET /resources/find/ignition/<type>/<name>` | one resource with its `signature` |
 | `GET /resources/type/ignition/<type>` | settings schema and defaults |
-| `GET /resources/ignition/tag-type-definition/...` | rejected; UDT types have no per-resource read (use `/tags/export?includeUdts=true`) |
+| `GET /resources/ignition/tag-type-definition/...` | rejected; UDT types have no per-resource read (use `/tags/export?includeUdts=true&type=json`) |
 | `/tags/read`, `/tags/browse`, `/tags/write` | do not exist; only `/tags/export` and `/tags/import` |
 | views, style classes, scripts | no endpoint at all; verify by disk shape and a clean `/scan/projects` |
 

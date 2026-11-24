@@ -1,4 +1,4 @@
-# Jython and gateway scripting quirks (8.3)
+# Jython and gateway scripting quirks
 
 ## Project scripts
 
@@ -43,7 +43,7 @@ if currentValue.value:
 - `system.perspective.getProjectInfo()` returns `{description, lastModified,
   lastModifiedBy, name, pageConfigs, title, views}`; `name` is the session
   project and `views` includes views inherited from the parent.
-- 8.3's gateway-api `ProjectManager` has no resource read; read resource bytes
+- The gateway-api `ProjectManager` has no resource read; read resource bytes
   from `<dataDir>/projects/<name>/...` walking the `project.json` parent chain.
   `system.project.requestScan()` remounts every open view.
 - `system.user.getUserSources()` returns user-source meta objects, not names;
@@ -61,4 +61,4 @@ if currentValue.value:
   yet mounted; use request/reply from the consumer's `onStartup`
   (`session-props-and-messaging.md`).
 - A Java `Map` reaches Jython with a one-argument `get()`; go through
-  `json.loads` or `dict(m)` first (`api-8-3-correctness.md`).
+  `json.loads` or `dict(m)` first (`api-correctness.md`).

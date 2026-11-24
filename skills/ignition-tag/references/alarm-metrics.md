@@ -1,6 +1,6 @@
 # Alarm Metrics tag properties
 
-Ignition 8.3 exposes aggregated alarm rollups on every folder and UDT instance (not on the provider root). They are read as tag properties with dot addressing:
+Ignition exposes aggregated alarm rollups on every folder and UDT instance (not on the provider root). They are read as tag properties with dot addressing:
 
 ```
 [default]Area1/Alarm Metrics.ActiveUnackCount     good quality, returns the count

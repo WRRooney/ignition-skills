@@ -1,6 +1,6 @@
 ---
 name: ignition-db
-description: Use when the agent needs to list, inspect, create, update, rename, or delete an Ignition 8.3 database connection (datasource) with ign db-conn, create or inspect an alarm journal profile that stores alarm events into a datasource with ign alarm-journal, or check which JDBC drivers the gateway has with ign driver. Triggers include "database connection", "db-conn", "datasource", "JDBC", "SQLite connection", "MySQL connection", "connectURL", "alarm journal", "alarm history", "queryJournal", "which drivers are installed". Do not use for tag providers, history providers, identity or OAuth providers, or databases unrelated to an Ignition gateway.
+description: Use when the agent needs to list, inspect, create, update, rename, or delete an Ignition database connection (datasource) with ign db-conn, create or inspect an alarm journal profile that stores alarm events into a datasource with ign alarm-journal, or check which JDBC drivers the gateway has with ign driver. Triggers include "database connection", "db-conn", "datasource", "JDBC", "SQLite connection", "MySQL connection", "connectURL", "alarm journal", "alarm history", "queryJournal", "which drivers are installed". Do not use for tag providers, history providers, identity or OAuth providers, or databases unrelated to an Ignition gateway.
 ---
 
 # Database connections, alarm journals, drivers

@@ -19,7 +19,7 @@ ign tools run build_pumps --dry-run
 
 - It is a seed for a whole family of resources, not a patch tool. Never re-run a generator over views a person has edited in the Designer; the guard in `ignition_gen_sdk.tools.seed_guard` refuses to overwrite an existing `view.json` unless `--force` is passed.
 - It is committed and reviewable. A tool that no longer matches anything live belongs in git history, not in `.ign_tools/`.
-- Missing CLI capability is still an SDK bug. A tool is for repetition, not for reaching internals the CLI does not expose.
+- A tool is for repetition, not for reaching internals the CLI does not expose. A missing CLI capability is still reported to the user, not worked around with a tool.
 
 ## `.agents/skills/ignition-local/` (project learnings, committed)
 
@@ -58,4 +58,4 @@ description: Project-specific Ignition facts for this repository. Read before an
 - (date-free, one line each, with the verb or endpoint involved)
 ```
 
-When a gotcha is general to Ignition 8.3 rather than to this gateway, it belongs upstream in the public skills repository; note it here first, then open an issue or pull request there.
+When a gotcha is general to Ignition rather than to this gateway, it belongs upstream in the public skills repository; note it here first, then open an issue or pull request there.

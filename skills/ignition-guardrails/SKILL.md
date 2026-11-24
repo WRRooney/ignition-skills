@@ -8,9 +8,9 @@ description: Turn the Ignition write guard on or off for the current agent host 
 ## Usage
 
 ```bash
-python3 .agents/skills/ignition-guardrails/guardrails.py on
-python3 .agents/skills/ignition-guardrails/guardrails.py off
-python3 .agents/skills/ignition-guardrails/guardrails.py status
+python3 .agents/skills/ignition-guardrails/scripts/guardrails.py on
+python3 .agents/skills/ignition-guardrails/scripts/guardrails.py off
+python3 .agents/skills/ignition-guardrails/scripts/guardrails.py status
 ```
 
 Run from the gateway data directory (or pass `--project DIR`). Without `--host` the
@@ -45,5 +45,5 @@ with a different write path; that is the exact behavior it exists to stop.
 
 ## Verify
 
-`python3 .agents/skills/ignition-guardrails/test_hook.py` exercises the hook with both
+`python3 .agents/skills/ignition-guardrails/scripts/test_hook.py` exercises the hook with both
 hosts' payload shapes and prints `N/N ok`.

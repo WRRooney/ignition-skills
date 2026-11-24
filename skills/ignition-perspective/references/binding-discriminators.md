@@ -1,4 +1,4 @@
-# Binding JSON shapes: propConfig wrapper and discriminators (8.3)
+# Binding JSON shapes: propConfig wrapper and discriminators
 
 Verified against gateway-written `view.json` files. Field names are exact.
 Semantics and builder usage are in `bindings-and-transforms.md`; the enforced

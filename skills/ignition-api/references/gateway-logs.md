@@ -26,7 +26,7 @@ After any scan that touches a script, query the log. Messages to know:
 |---|---|
 | `Could not initialize project script module '<pkg.mod>'` plus a `PyException` | the module is structurally wrong or has a syntax error |
 | `Error creating dataFile ... NoSuchFileException` | a `resource.json` lists a file that does not exist (typically `thumbnail.png`); persists until a restart even after the manifest is fixed |
-| `AttributeError: 'module' object has no attribute ...` on `system.*` | an 8.1 or invented function; see the ignition-view skill's 8.3 correctness reference |
+| `AttributeError: 'module' object has no attribute ...` on `system.*` | a legacy or invented function; see the ignition-scripts skill's API correctness reference |
 | `Tag already exists, and 'abort' collision policy has been specified` | a config scan re-submitted an existing type; harmless unless instances export as `Unknown` |
 | `perspective.ClientSession :: WebSocket disconnected` | a headless session closed; not an error in your view |
 | `IllegalArgumentException: Provider not found:` | a script resolved the default provider from an empty tag path |

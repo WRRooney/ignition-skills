@@ -1,9 +1,4 @@
----
-name: ignition-component
-description: Use when the agent needs the inventory of Ignition 8.3 Perspective component type strings (ia.display.*, ia.input.*, ia.navigation.*, ia.symbol.*, ia.chart.*), wants to filter them by palette, needs to know which Pydantic model in the SDK backs a given ia.* type, or needs valid icon glyph names (material/ignition sprite sets) for an Icon component. Triggers include "list components", "component types", "ia.* types", "palette", "which chart types", "discriminator", "is there a model for", "icon names", "ign icons". Do not use for React, Vue, or any UI component outside Ignition Perspective, and not for authoring a view (use the view skill).
----
-
-# Perspective component inventory
+# Component inventory and icons
 
 `ign component list` prints every `ia.*` type string the SDK's typed
 component union knows. It reads the bundled inventory and never calls the
@@ -66,14 +61,14 @@ the model set cannot drift.
 
 Every typed class pairs with a `<Name>Props` model holding the component's
 `props`. The full type-to-class table is in
-`references/palette-model-map.md`.
+`palette-model-map.md`.
 
 Embedded View params are `props.params`, not `props.viewParams`; the latter
 is ignored by the runtime and renders every param as null.
 
 ## Icon glyph names: `ign icons list`
 
-Perspective 8.3 keeps its icon sprites inside the Perspective module jar, not
+Perspective keeps its icon sprites inside the Perspective module jar, not
 on disk. `ign icons list` extracts them and prints valid glyph names for an
 Icon component's `props.path` (`material/home`, `ignition/...`).
 
@@ -98,10 +93,3 @@ command prints an error. Sets are `material`, `ignition`, and the
 - Do not invent flags; the surfaces above are complete.
 - Do not treat `GenericComponent` acceptance as proof that a type string is
   valid on the gateway; only the typed inventory is verified.
-- Do not use this skill to author or place components; that is the view skill.
-
-## References
-
-| File | Summary |
-|---|---|
-| `references/palette-model-map.md` | Every `ia.*` type string with its model class and source file |

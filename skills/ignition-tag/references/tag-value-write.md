@@ -1,6 +1,6 @@
 # Writing a tag value through `/tags/import`
 
-The Ignition 8.3 HTTP API exposes exactly two tag endpoints: `GET /data/api/v1/tags/export` and `POST /data/api/v1/tags/import`. There is no `/tags/write`, `/tags/read` or `/tags/browse`. Do not plan a verification step against `/tags/read`; `ign api` rejects it as not in the spec.
+The Ignition HTTP API exposes exactly two tag endpoints: `GET /data/api/v1/tags/export` and `POST /data/api/v1/tags/import`. There is no `/tags/write`, `/tags/read` or `/tags/browse`. Do not plan a verification step against `/tags/read`; `ign api` rejects it as not in the spec.
 
 ## Recipe
 
@@ -22,7 +22,7 @@ ign tag import --file body.json --provider default --path Tanks/T01 --collision-
 
 Response: `Import complete: successCount=1 failureCount=0`. `--path` is the parent folder; the tag `name` joins it to form the full path. Verified on UDT member tags (for example self-resetting command booleans inside an instance); see above for standalone tags.
 
-Before writing inside a UDT instance, export the parent folder first (`ign api GET "/data/api/v1/tags/export?provider=default&path=Tanks%2FT01&recursive=true"`) so the structure can be restored if a fuller definition ever overwrote bindings.
+Before writing inside a UDT instance, export the parent folder first (`ign api GET "/data/api/v1/tags/export?provider=default&path=Tanks%2FT01&recursive=true&type=json"`) so the structure can be restored if a fuller definition ever overwrote bindings.
 
 ## Body shape rules
 

@@ -1,6 +1,6 @@
-# Alarm rosters and pipelines from scripting in 8.3
+# Alarm rosters and pipelines from scripting
 
-The `system.alarm` scripting surface in 8.3 lets a script manage on-call
+The `system.alarm` scripting surface lets a script manage on-call
 rosters and inspect pipelines, but not create pipelines or dispatch
 notifications. None of it has a REST equivalent.
 

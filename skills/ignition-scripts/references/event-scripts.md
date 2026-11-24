@@ -1,9 +1,9 @@
 # Gateway and session event scripts
 
-In 8.3 every project event script is a directory holding `<function>.py` and a
+Every project event script is a directory holding `<function>.py` and a
 `resource.json` (`scope: "G"`, `files: ["<function>.py"]`). Settings live in
-`resource.json` `attributes` next to `enabled`. 8.1 stored all gateway events in one
-gzipped binary `ignition/event-scripts/data.bin`; that file does not exist in 8.3.
+`resource.json` `attributes` next to `enabled`. Older versions stored all gateway events in one
+gzipped binary `ignition/event-scripts/data.bin`; that file no longer exists.
 
 Gateway events live under `projects/<p>/ignition/`, session events under
 `projects/<p>/com.inductiveautomation.perspective/`. Singleton kinds sit directly in

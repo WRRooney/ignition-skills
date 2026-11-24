@@ -14,7 +14,10 @@ ign api POST /data/api/v1/scan/config --confirm
 ```
 
 Both need the `X-Ignition-API-Token` header, which `ign api` supplies. Both
-are idempotent and cheap; scan even after a one-file change. Neither takes a
+are idempotent. Call them manually only after a change `ign` did not make
+(git checkout or clean, a verb run with `--no-scan`, a failed automatic scan).
+`ign` write verbs already scan, so do not add a second scan after them, and
+never use a scan as a health check (use `ign api GET /data/api/v1/gateway-info`). Neither takes a
 body or query parameters; only `/tags/import` accepts a `collisionPolicy`, so
 a scan applies the gateway's internal abort policy to anything it re-reads
 (hence the lock below).
@@ -31,8 +34,9 @@ a scan applies the gateway's internal abort policy to anything it re-reads
 
 Every `ign` write verb posts the matching scan after a successful write
 (`--scan/--no-scan`, default scan). A failed scan is reported as
-`WARNING:` on stderr with exit 0; the disk write already happened, so rerun
-the scan manually. Pass `--no-scan` when the gateway is unreachable.
+`WARNING:` on stderr with exit 0. Treat that as a failure even though the
+exit code is 0: the disk write already happened, but the gateway has not
+loaded it, so rerun the scan manually and confirm it succeeds. Pass `--no-scan` when the gateway is unreachable.
 
 ## Config scan lock
 

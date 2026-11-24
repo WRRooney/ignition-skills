@@ -5,7 +5,7 @@
     {
       "name": "ignition",
       "source": "./",
-      "description": "Skills for building Ignition 8.3 projects with the ignition-gen-sdk `ign` CLI."
+      "description": "Skills for building Ignition projects with the ignition-gen-sdk `ign` CLI."
     }
   ]
 }

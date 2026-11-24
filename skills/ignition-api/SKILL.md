@@ -1,6 +1,6 @@
 ---
 name: ignition-api
-description: Use when the agent needs to call a raw Ignition 8.3 Gateway HTTP endpoint under /data/api/v1/* that no dedicated ign verb wraps (GET, POST, PUT, DELETE, PATCH), fetch or render the gateway's OpenAPI spec and endpoint docs, read the gateway log with ign logs, or inspect and text-patch an alarm pipeline. Triggers include "ign api", "raw API", "GET endpoint", "POST /data/api/v1/...", "scan endpoint", "gateway-info", "openapi fetch", "api reference", "gateway log", "ign logs", "alarm pipeline". Do not use for tags, views, providers, database connections, or components that have their own ign verb, and never for unrelated REST APIs (GitHub, cloud providers).
+description: Use when the agent needs to call a raw Ignition Gateway HTTP endpoint under /data/api/v1/* that no dedicated ign verb wraps (GET, POST, PUT, DELETE, PATCH), fetch or render the gateway's OpenAPI spec and endpoint docs, read the gateway log with ign logs, or inspect and text-patch an alarm pipeline. Triggers include "ign api", "raw API", "GET endpoint", "POST /data/api/v1/...", "scan endpoint", "gateway-info", "openapi fetch", "api reference", "gateway log", "ign logs", "alarm pipeline". Do not use for tags, views, providers, database connections, or components that have their own ign verb, and never for unrelated REST APIs (GitHub, cloud providers).
 ---
 
 # Ignition raw API via `ign api`
@@ -16,7 +16,7 @@ calls: they put the token in argv, shell history, and tool output
 ## Command surface
 
 ```
-ign api METHOD PATH [--json '...' | --file PATH] [--strict] [--confirm] [--dry-run] [--no-color]
+ign api METHOD PATH [--json '...' | --file PATH] [--out PATH] [--strict] [--confirm] [--dry-run] [--no-color]
 ```
 
 | Option | Effect |
@@ -25,6 +25,7 @@ ign api METHOD PATH [--json '...' | --file PATH] [--strict] [--confirm] [--dry-r
 | `PATH` | Must start with `/`, e.g. `/data/api/v1/gateway-info`. Query params go inline, quoted |
 | `--json '{...}'` | Literal JSON body |
 | `--file PATH` | JSON body from a file, or `-` for stdin. Mutually exclusive with `--json` |
+| `--out PATH` | Save the raw response body to a file (binary-safe, e.g. a project export zip) |
 | `--strict` | Deep body, query, and path validation with openapi-core (needs the `strict` extra) |
 | `--confirm` | Skip the tty confirmation prompt for non-GET/HEAD/OPTIONS |
 | `--dry-run` | Print `{method, path, body}` and exit 0 without sending |
@@ -41,11 +42,22 @@ ign api GET '/data/api/v1/tags/export?provider=default&type=json&recursive=true'
 | Intent | Command |
 |---|---|
 | Health check | `ign api GET /data/api/v1/gateway-info` |
-| Create/modify a config resource | `ign api POST /data/api/v1/resources/ignition/<type> --file body.json` (body is a JSON array, see `references/resources-array-body.md`) |
-| Describe a resource type's settings schema | `ign api GET /data/api/v1/resources/type/ignition/<type>` |
-| Rescan projects after a disk write | `ign api POST /data/api/v1/scan/projects --confirm` |
-| Rescan config after a disk write | `ign api POST /data/api/v1/scan/config --confirm` |
+| Create/modify a config resource | `ign api POST /data/api/v1/resources/<module>/<type> --file body.json` (body is a JSON array, see `references/resources-array-body.md`). `<module>` is `ignition` for core types, or the module id, e.g. `com.inductiveautomation.opcua/device` |
+| Describe a resource type's settings schema | `ign api GET /data/api/v1/resources/type/<module>/<type>` |
+| Rescan projects after a non-`ign` disk change (git checkout, `--no-scan`) | `ign api POST /data/api/v1/scan/projects --confirm` |
+| Rescan config after a non-`ign` disk change | `ign api POST /data/api/v1/scan/config --confirm` |
 | List loaded alarm pipelines | `ign api GET /data/alarm-notification/api/v1/pipelines` |
+
+## When no verb covers the task
+
+1. Check for a dedicated verb first: `ign --help`, then `ign <group> --help`.
+2. If none exists, look the endpoint up in `.ign/api_reference/INDEX.md` and use
+   `ign api` with a JSON body. Read the type schema (`resources/type/...`) before
+   writing the body.
+3. `ign api` sends JSON bodies only. If the endpoint needs a file upload
+   (`resources/datafile/...`, multipart), or the call fails and the error does not
+   say how to fix the body, stop and tell the user what is missing. Do not read or
+   modify `ignition-gen-sdk` to work around it unless the user asks for SDK work.
 
 ## Order of checks
 
@@ -170,8 +182,8 @@ and cautions: `references/security-properties.md`.
 | `references/http-client-ban.md` | Why curl/wget/httpx/requests are banned for gateway calls |
 | `references/resources-array-body.md` | Resources API wants a JSON array body; element shape; signatures; which read paths answer; live registration |
 | `references/put-projects-full-replace.md` | `PUT /projects/{name}` resets omitted fields; create via `POST /projects`; recovery |
-| `references/audit-log-filters.md` | `system.util.queryAuditLog` filter behavior on the 8.3 database profile |
+| `references/audit-log-filters.md` | `system.util.queryAuditLog` filter behavior on a database audit profile |
 | `references/alarm-pipeline-format.md` | `data.bin` binary layout and why `replace-text` is safe |
-| `references/alarm-scripting-surface.md` | `system.alarm` rosters and pipelines: what exists in 8.3, what does not, how to verify |
+| `references/alarm-scripting-surface.md` | `system.alarm` rosters and pipelines: what exists, what does not, how to verify |
 | `references/gateway-logs.md` | `ign logs` as the first diagnostic: messages to recognize, persistence, proving a script ran |
 | `references/gateway-restart.md` | Restart over REST, why `pending: []` says nothing, when a restart is actually needed |

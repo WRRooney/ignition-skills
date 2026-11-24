@@ -47,6 +47,10 @@ link() {  # link NAME: symlink $NEUTRAL/NAME into the host dir; never clobber a 
   ln -sfn "$(realpath --relative-to="$PROJECT/$HOSTDIR" "$NEUTRAL/$1")" "$target"
 }
 
+for old in ignition-view ignition-component; do  # renamed or merged skills; drop stale installed copies
+  rm -rf "${NEUTRAL:?}/$old"
+  [ -L "$PROJECT/$HOSTDIR/$old" ] && rm -f "$PROJECT/$HOSTDIR/$old"
+done
 for s in "$HERE"/skills/*/; do
   name=$(basename "$s")
   rm -rf "$NEUTRAL/$name"
@@ -70,12 +74,12 @@ echo "skills: $NEUTRAL -> $PROJECT/$HOSTDIR"
 
 case "$HOST" in
   claude-code)
-    [ "$HOOK" = 1 ] && python3 "$HERE/skills/ignition-guardrails/guardrails.py" on --host claude-code --project "$PROJECT" ;;
+    [ "$HOOK" = 1 ] && python3 "$HERE/skills/ignition-guardrails/scripts/guardrails.py" on --host claude-code --project "$PROJECT" ;;
   codex|opencode) echo "Append hosts/$HOST/AGENTS.snippet.md to $PROJECT/AGENTS.md" ;;
   hermes)
     echo "Append hosts/hermes/AGENTS.snippet.md to $PROJECT/AGENTS.md (or .hermes.md if the project has one: Hermes loads only the first it finds)"
     echo "Then run \`hermes skills trust\` inside $PROJECT once; project skills stay unloaded until trusted."
-    [ "$HOOK" = 1 ] && python3 "$HERE/skills/ignition-guardrails/guardrails.py" on --host hermes ;;
+    [ "$HOOK" = 1 ] && python3 "$HERE/skills/ignition-guardrails/scripts/guardrails.py" on --host hermes ;;
   gemini)         echo "Append hosts/gemini/GEMINI.snippet.md to $PROJECT/GEMINI.md" ;;
   cursor)         mkdir -p "$PROJECT/.cursor/rules" && cp "$HERE/hosts/cursor/ignition.mdc" "$PROJECT/.cursor/rules/" && echo "rule: $PROJECT/.cursor/rules/ignition.mdc" ;;
 esac

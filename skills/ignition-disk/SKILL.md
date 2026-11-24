@@ -1,6 +1,6 @@
 ---
 name: ignition-disk
-description: Use when the agent needs to READ or locate an Ignition 8.3 gateway file on disk, such as a config resource under config/resources/<layer>/**, a Perspective view.json, page-config, session-props, project script, named query, style class, or project.json under projects/<name>/**, understand the config layer chain (system, external, core, local), read resource.json metadata, or trigger a gateway scan after a write. Triggers include "config/resources", "core layer", "local layer", "resource.json", "view.json", "what's in this view", "project layout", "scan/projects", "scan/config", "rescan". Read-only: for creating or editing any of these files use the matching ign verb. Do not use for unrelated files, gateway logs (use ign logs), or SDK source code.
+description: Use when the agent needs to READ or locate an Ignition gateway file on disk, such as a config resource under config/resources/<layer>/**, a Perspective view.json, page-config, session-props, project script, named query, style class, or project.json under projects/<name>/**, understand the config layer chain (system, external, core, local), read resource.json metadata, or trigger a gateway scan after a write. Triggers include "config/resources", "core layer", "local layer", "resource.json", "view.json", "what's in this view", "project layout", "scan/projects", "scan/config", "rescan". Read-only: for creating or editing any of these files use the matching ign verb. Do not use for unrelated files, gateway logs (use ign logs), or SDK source code.
 ---
 
 # Gateway files on disk: read, locate, rescan
@@ -14,8 +14,9 @@ lives, and telling the gateway to rescan. It never writes.
 
 Only `ign` verbs write under `config/resources/**` and `projects/**`. Do not
 use Write or Edit tools, heredocs, `sed -i`, `cp`, `mv`, or Python file IO on
-those paths. If a needed shape is not expressible with an existing verb, the
-fix is a new option or model in the SDK, never a hand-written file. Reasons
+those paths. If a needed shape is not expressible with an existing verb, stop
+and tell the user what is missing; never hand-write the file, and do not
+modify the SDK unless the user asks for that work. Reasons
 and the full list of banned vectors are in `references/sole-writer-rule.md`.
 
 ## Config layers
@@ -115,8 +116,10 @@ safe. Useful checks:
 ## Scans
 
 The gateway notices disk changes only when told. `ign` write verbs scan for
-you by default (`--no-scan` to skip). After any other write, or to force a
-reload, call the scan endpoints through `ign api`:
+you by default (`--no-scan` to skip). After a change `ign` did not make (git checkout or
+clean, `--no-scan`, a failed automatic scan), call the scan endpoints through
+`ign api`. Do not add a scan after an `ign` verb, and do not use a scan as a
+health check. Details in `references/scan-endpoints.md`.
 
 ```
 ign api POST /data/api/v1/scan/projects --confirm    # projects/** changed

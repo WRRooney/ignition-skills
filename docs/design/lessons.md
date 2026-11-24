@@ -24,7 +24,7 @@ shape, find at least one gateway-written sample and diff against it byte for byt
 **Component events live under a category layer: `events.component.<name>`.** A view whose events dict is flat
 (`events.onActionPerformed`) validates as JSON and silently will not open. The handler is one flat object `{type, scope,
 config}`, not a list; categories are `component` and `dom`. Handler types seen in exports are `script`, `nav`, and
-`popup`; an unmodeled handler type rejects the whole view on load, so tooling must accept all three (ignition-view
+`popup`; an unmodeled handler type rejects the whole view on load, so tooling must accept all three (ignition-perspective
 `model-shapes.md`).
 
 **View params are bare scalars; binding type is `"property"`, not `"prop"`.** Agents borrow the UDT parameter shape
@@ -50,7 +50,7 @@ named query by `queryPath` and passes `parameters`, never raw SQL.
 split `{position: left|right| top|bottom}`, tab `{tabIndex}`, breakpoint `{size: small|large}`, column `{breakpoints:
 [{colIndex, name, order, rowIndex, span}]}`, coordinate `{x, y, width, height, rotate: {anchor}}`. Tab children are a
 flat list keyed by `tabIndex`, not nested under a tab. The breakpoint container's type string is `ia.container.breakpt`
-(ignition-view `container-positions.md`).
+(ignition-perspective `container-positions.md`).
 
 **Do not over-constrain on thin evidence.** Column breakpoint names are `sm/md/lg` in every sample, but the gateway
 accepts custom names, so a `Literal` would reject valid views. When a corpus shows one value set but the platform
@@ -109,7 +109,7 @@ green suite unless the error count is checked. Expect zero errors, not zero fail
 **Render headlessly, and read the right DOM signals.** A Perspective client URL renders without a login wall, so a
 headless browser can screenshot any mounted page. `.component-error-boundary` means a component crashed (a view defect);
 `.ia_qualityOverlay--error` means bound data has bad quality (a data signal, not necessarily a view defect). Report the
-two separately and let only crashes fail the check (ignition-view `runtime-validation.md`).
+two separately and let only crashes fail the check (ignition-perspective `runtime-validation.md`).
 
 **A detector that errors must fail, not pass.** A validation verdict that treated "could not count crashes" (a `-1`) as
 "zero crashes" reported a broken view as clean. Any inconclusive probe result is a failure with an "inconclusive"
@@ -153,7 +153,7 @@ exports settled every shape argument in the log faster than any discussion.
 
 **Ignition expression equality is a single `=`; `==` is a silent parse error.** The binding never evaluates and the prop
 keeps its default, so an alarm color that "never resolves" is often this. `!=`, `&&`, and `||` are valid. A generator
-should reject `==` outside quoted literals at author time (ignition-view `expression-idioms.md`).
+should reject `==` outside quoted literals at author time (ignition-perspective `expression-idioms.md`).
 
 **Expression function names are case-insensitive; `system.*` calls are not.** Real exports contain `COALESCE`, `isnull`,
 and `tostr`. A checker that compares expression names case-sensitively rejects valid work; a checker that folds case for
@@ -189,7 +189,7 @@ chosen deliberately to avoid pop-in, and documented where it is used.
 
 **Cross-view navigation inside an embedded view needs a session prop.** An embedded view cannot write its parent's
 `view.custom.*`, and `system.perspective.navigate` moves the whole page, not an embedded view's `props.path`. Declare a
-session prop, write it from the nested click, and bind the container's embed to it (ignition-view
+session prop, write it from the nested click, and bind the container's embed to it (ignition-perspective
 `session-props-and-messaging.md`).
 
 **Expression bindings do not run inside event scripts.** A click handler that needs a computed target must read the
@@ -202,7 +202,7 @@ one script transform and return a keyed object.
 **Guard every discovery transform against a null or empty path.** Bindings fire on first mount with `null`; `waitOnAll`
 does not hold a script transform back. An empty path handed to `getConfiguration` or a `/*` query is the whole provider,
 recursively, plus a blocking read per field. The first line of every transform that feeds a browse is `if value is None
-or value == '': return []` (ignition-view `discovery-transform-null-guard.md`).
+or value == '': return []` (ignition-perspective `discovery-transform-null-guard.md`).
 
 **Gate `props.path`, not `position.display`, on embeds.** A hidden `ia.display.view` stays mounted and its bindings keep
 running. Bind `props.path` to `''` to defer loading; an empty path renders nothing but logs a `React.cloneElement(null)`
@@ -216,7 +216,7 @@ expression must exist as a key in the view's `custom` block; a dangling referenc
 
 **8.3 is not 8.1, and the shipped sample projects are 8.1-authored.** More than a hundred `system.*` functions were
 removed or renamed between the versions. Validate every call against the 8.3 documentation, not against memory or
-against sample project code (ignition-view `api-8-3-correctness.md`).
+against sample project code (ignition-scripts `api-correctness.md`).
 
 **The APIs agents invent most often.** `system.perspective.setSessionProperty` and `getSessionProperty` (do not exist;
 use `self.session.custom.*` in component scope), `system.tag.browseTags` (removed; use `system.tag.browse`),
@@ -424,7 +424,7 @@ renders the same way.
 
 **Ship the framework as a domain vocabulary, not as code.** Config, descriptions, operator notes, and group ordering
 live in Designer-editable data (view `custom` objects, tag properties). Library scripts discover and derive; they never
-hold copy or lookup tables. Adding a card, a group, or a page is a Designer edit (ignition-view `params-and-config.md`).
+hold copy or lookup tables. Adding a card, a group, or a page is a Designer edit (ignition-perspective `params-and-config.md`).
 
 **A folder anchor instance means "render this folder".** Dropping an instance of a section type into a folder turns that
 folder into a form section with its own header, layout, and column config carried as custom properties on the anchor.
@@ -448,7 +448,7 @@ every mutation returns `{ok, message}`.
 **The URL is the state.** Two mounts cover every destination: a landing page and `/App/:relativeTagPath`. The nav node
 is a tag; the whole relative path travels as one percent-encoded segment (`%2F` for `/`) because 8.3 has no catch-all
 page param and rejects extra segments. Encode with `urllib.quote(s, safe='')`, never `urlEncode()`, whose `+` for space
-survives decoding and corrupts labels (ignition-view `page-routing-and-docks.md`).
+survives decoding and corrupts labels (ignition-perspective `page-routing-and-docks.md`).
 
 **Navigation points are tags.** An instance of a nav-node type dropped in a folder makes that folder a destination; its
 label defaults to the parent folder name so the folder name is both label and URL segment. Adding a page is adding a
@@ -541,7 +541,7 @@ bound from the view's customs.
 
 **Never watch a transient interaction prop with `onChange`.** A property `onChange` and a page-scoped message handler
 reacting to the same write run in that order, so the handler finds the state already cleared. Transient props (drag
-source, hover target) may be bound to draw, never watched to react (ignition-view `onchange-vs-messages.md`).
+source, hover target) may be bound to draw, never watched to react (ignition-perspective `onchange-vs-messages.md`).
 
 **`page.custom` does not exist.** The page scripting object exposes no property trees; `self.page.custom` is `None`.
 Page URL params land on the primary view's own `params`; a docked view reads `{page.props.path}` and decodes it itself.
@@ -559,7 +559,7 @@ instance's value unless it is `auto`, in which case it follows the built-in `ses
 **Colorless SVG plus a colored style class.** Author `ia.shapes.svg` paths with geometry, opacity, and width only; a
 class carrying `stroke` and `fill` paints them. Use the module's own symbol variables (`--symbolStroke--running`,
 `--symbolFill--stopped`, `--pipeStroke`), which ship inside the Perspective module and are defined in no theme file, so
-hand-drawn geometry tracks the stock symbols in every theme. Opacity is not a state channel (ignition-view
+hand-drawn geometry tracks the stock symbols in every theme. Opacity is not a state channel (ignition-perspective
 `svg-graphics.md`).
 
 **One artwork per axis, CSS mirror for the opposite side.** A four-way orientable graphic ships two SVGs sharing a path,
@@ -568,7 +568,7 @@ gated by `lower(orientation)` plus a map transform, mirrored with `scaleX(-1)` o
 
 **`ia.symbol.valve` orients via `props.valve`, not `props.orientation`.** The valve has no orientation prop; binding one
 is a silent no-op. A blank valve on a cold session is a client-side sprite race, not a view bug; no view-level gate
-fixes it (ignition-view `symbols.md`).
+fixes it (ignition-perspective `symbols.md`).
 
 **A self-building palette discovers views by path convention and declared variants.** Equipment symbols are found at a
 conventional path per type; built-in symbol wrappers declare their axes in `custom.variants` and the palette sweeps one
@@ -576,11 +576,11 @@ factor at a time. A representative demo instance per type lets tiles render hone
 
 **Fixed click contract on every tile family.** Label, graphic, and alarm frame open the detail popup; value readouts add
 a pen to the shared ad hoc trend. Readouts use a generic `hover` class, never button chrome. Overlays own the click;
-labels above them are `pointerEvents: none` (ignition-view `click-layering.md`).
+labels above them are `pointerEvents: none` (ignition-perspective `click-layering.md`).
 
 **One class per state, swapped by a `style.classes` binding.** `variants[].pseudo` accepts only real CSS pseudo-classes,
 never a custom state name. Compute the class string once on a view custom prop and property-bind it to every consumer; a
-map transform with `outputType: "style-list"` is for a genuinely per-component enum (ignition-view
+map transform with `outputType: "style-list"` is for a genuinely per-component enum (ignition-perspective
 `style-class-state-binding.md`).
 
 **Split classes so no two on one element set the same property.** Otherwise the outcome depends on stylesheet emission
@@ -611,7 +611,7 @@ expressions blank out. Numbers mid-band, strings `""`, `tagPath` a live tag.
 **Three kinds of stored prop value, three treatments.** A bound persistent prop's value is a volatile snapshot: ignore
 it. An unbound persistent prop's value is the live mount seed: the Designer saves preview-mode writes into it, so diff
 seeds on purpose after a Designer session and make transient state `persistent: false`. A bound gate prop must persist
-its undecided sentinel; a `-1` to `1` flip flashes protected content before the check resolves (ignition-view
+its undecided sentinel; a `-1` to `1` flip flashes protected content before the check resolves (ignition-perspective
 `persistent-props.md`).
 
 **Bindings sit on the same components as the props they drive.** Component-level `propConfig` entries carry `persistent`
@@ -619,7 +619,7 @@ and `access` alongside the binding; flag-only entries are valid. Disable a bindi
 than deleting it.
 
 **Views cannot nest inside another view.** A view at `A/B` when `A` is a view renders a dashed placeholder, silently;
-validation reports clean. A path segment that holds views is a plain folder (ignition-view `view-nesting.md`).
+validation reports clean. A path segment that holds views is a plain folder (ignition-perspective `view-nesting.md`).
 
 **Generators seed a family once; the view file is truth afterward.** Never re-run a generator over a Designer-edited
 view. Later changes are surgical load, modify, validate, write edits on the current file, with an exact round-trip lock

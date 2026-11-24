@@ -1,6 +1,6 @@
 # UDT instance override rules
 
-Three behaviors of Ignition 8.3 instance overrides that fail silently: the file imports, the config scan reports clean, and the only symptom is bad quality on a member or an alarm that is active when it should not be.
+Three behaviors of Ignition instance overrides that fail silently: the file imports, the config scan reports clean, and the only symptom is bad quality on a member or an alarm that is active when it should not be.
 
 ## 1. An override leaf must state `valueSource` explicitly
 

@@ -1,4 +1,4 @@
-# Drag and drop in Perspective 8.3
+# Drag and drop in Perspective
 
 ## Native drag events never fire
 

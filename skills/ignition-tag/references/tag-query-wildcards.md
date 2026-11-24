@@ -27,7 +27,7 @@ Verified against the gateway's own `common.jar`.
 
 - Discovery that runs `system.tag.getConfiguration(path, True, False)` on an
   empty path reads the whole provider recursively; guard the path first. The
-  view-side rule is in the ignition-view skill
+  view-side rule is in the ignition-perspective skill
   (`discovery-transform-null-guard`).
 - In an unauthenticated session, `getConfiguration` returns nothing when the
   provider requires an authenticated security level for edit or write; read

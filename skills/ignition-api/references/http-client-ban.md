@@ -1,6 +1,6 @@
 # Why raw HTTP clients are banned for gateway calls
 
-Every Ignition 8.3 API call needs the `X-Ignition-API-Token` header. A raw
+Every Ignition API call needs the `X-Ignition-API-Token` header. A raw
 client (curl, wget, httpx one-liner, requests script) has to receive that
 header value as a command-line argument or an inline string, which leaks it
 into:

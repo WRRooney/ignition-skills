@@ -136,7 +136,8 @@ def main() -> int:
     reason = (
         "BLOCKED: direct write to an Ignition file (config/resources/** or projects/**). "
         "Only the `ign` CLI writes these files. If no `ign` verb expresses the shape you need, "
-        "extend the ignition-gen-sdk model and CLI, then run `ign`; never hand-write gateway JSON."
+        "stop and tell the user which verb or option is missing; do not hand-write gateway JSON "
+        "and do not modify ignition-gen-sdk unless the user asks."
     )
     if hermes:
         print(json.dumps({"action": "block", "message": reason}))

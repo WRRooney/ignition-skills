@@ -30,5 +30,5 @@ both `value` and `defaultValue: 42.0`; either serves as the initial value.
 ## Verify
 
 Push one tag of each type with `ign tag push` and diff
-`ign api GET '/data/api/v1/tags/export?provider=default&path=<folder>&recursive=true'`
+`ign api GET '/data/api/v1/tags/export?provider=default&path=<folder>&recursive=true&type=json'`
 against the body you sent.

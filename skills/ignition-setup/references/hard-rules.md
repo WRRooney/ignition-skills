@@ -14,7 +14,7 @@ Deletion is included. `ign tag delete` and `ign view delete` are the sanctioned 
 
 Calling `ProjectDiskBackend`, `DiskBackend` or a model from a one-off script to route around a missing CLI option is not acceptable even though it uses SDK code. It skips the CLI's validation, `--dry-run`, scan handling and manifest recording, and leaves the gap in place for the next agent.
 
-A missing capability is an SDK bug: add the option or fix the model in the `ignition-gen-sdk` repository with a test, then run the CLI. The only sanctioned non-CLI callers are committed generators under `.ign_tools/`, run via `ign tools run`, which are reviewable seeds that use the same models.
+A missing capability is a gap to report, not to repair mid-task. If no verb or option expresses the shape needed, stop that operation and report it to the user: the missing verb or option, the commands you checked (`ign <group> --help`, the `ign api` resource path), and what remains undone. Do not read, edit, clone, upgrade or reinstall `ignition-gen-sdk` to close the gap unless the user asks for SDK work. Extending the SDK is a separate task the user starts. The only sanctioned non-CLI callers are committed generators under `.ign_tools/`, run via `ign tools run`, which are reviewable seeds that use the same models.
 
 ## 3. No raw HTTP clients
 

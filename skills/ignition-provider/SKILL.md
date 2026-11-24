@@ -1,7 +1,7 @@
 ---
 name: ignition-provider
 description: |
-  Use when the user wants to list, inspect, create, update, delete, bulk-delete, rename or describe an Ignition 8.3 tag provider with the `ign provider` verbs (the `/data/api/v1/resources/ignition/tag-provider` resource family), or needs the resources-API and project-API rules that provider CRUD shares (array bodies, signatures, PUT is a full replace, create projects through POST).
+  Use when the user wants to list, inspect, create, update, delete, bulk-delete, rename or describe an Ignition tag provider with the `ign provider` verbs (the `/data/api/v1/resources/ignition/tag-provider` resource family), or needs the resources-API and project-API rules that provider CRUD shares (array bodies, signatures, PUT is a full replace, create projects through POST).
   Positive triggers: "tag provider", "list providers", "provider names", "create provider", "delete provider", "rename provider", "describe provider", "provider config", "editPermissions", "STANDARD provider", "create a project", "PUT /projects".
   Do not trigger for: OAuth or identity providers, database providers or connections (use ignition-db), DNS or cloud providers, tags inside a provider (use ignition-tag).
 ---

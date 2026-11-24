@@ -1,14 +1,14 @@
 ---
 name: ignition-setup
 description: |
-  Use when an agent needs a working `ign` CLI (package `ignition-gen-sdk`) against an Ignition 8.3 gateway: install, `.env` (IGNITION_URL, IGNITION_API_TOKEN, IGNITION_DATA_DIR), creating a gateway API token, verifying the connection, endpoint docs, choosing the API or data-dir write backend, and setting up `.ign_tools/` and `.agents/skills/ignition-local/`. Also use when `ign` reports "Auth error", "Network error", "Path error", or is missing from PATH.
+  Use when an agent needs a working `ign` CLI (package `ignition-gen-sdk`) against an Ignition gateway: install, `.env` (IGNITION_URL, IGNITION_API_TOKEN, IGNITION_DATA_DIR), creating a gateway API token, verifying the connection, endpoint docs, choosing the API or data-dir write backend, and setting up `.ign_tools/` and `.agents/skills/ignition-local/`. Also use when `ign` reports "Auth error", "Network error", "Path error", or is missing from PATH.
   Positive triggers: "set up ign", "install ignition-gen-sdk", "connect to the gateway", "IGNITION_API_TOKEN", ".env for Ignition", "API token", "ign not found", "which backend", "data dir mounted", "openapi spec", "Generating API client".
-  Do not trigger for: authoring tags or views (use ignition-tag / ignition-view), git tag, html tag, Ignition Designer installation, Java or gateway installation itself.
+  Do not trigger for: authoring tags or views (use ignition-tag / ignition-perspective), git tag, html tag, Ignition Designer installation, Java or gateway installation itself.
 ---
 
 ## What this skill covers
 
-Getting from "a user has an Ignition 8.3 gateway" to "the agent can run `ign` verbs against it safely". Once setup is verified, the resource skills (`ignition-tag`, `ignition-provider`, `ignition-view`, ...) take over.
+Getting from "a user has an Ignition gateway" to "the agent can run `ign` verbs against it safely". Once setup is verified, the resource skills (`ignition-tag`, `ignition-provider`, `ignition-perspective`, ...) take over.
 
 ## 1. Install
 
@@ -90,6 +90,8 @@ ign provider names                      # a typed read verb: generates the clien
 ign openapi docs                        # renders .ign/api_reference/*.md (INDEX.md, AUTH.md, one file per endpoint group)
 ```
 
+**Older gateways are unsupported.** `ign` and these skills need the `/data/api/v1` API and the file-based `config/resources/` layout, which older gateways lack. If `gateway-info` returns 404 or the spec fetch fails with a 404, stop and tell the user the gateway is not supported. Do not look for workarounds (legacy modules, JAR inspection, other APIs).
+
 The spec is fetched automatically the first time anything needs it; `ign openapi fetch` exists only to refresh it after a gateway upgrade (it prints the path count and gateway version, which is a handy check on its own).
 
 Error output follows one contract: an `Error:` line plus a `Hint:` line on stderr, exit code 1. Surface both verbatim to the user. Common mappings:
@@ -99,6 +101,7 @@ Error output follows one contract: an `Error:` line plus a `Hint:` line on stder
 | `Auth error` | 401: token missing, malformed or refused | `.env` not in cwd; token is not the full `name:secret`; or the key requires secure connections while `IGNITION_URL` is `http://` (step 3) |
 | `Permission error` | 403: the key cannot write | the key's security level is not in Gateway Write Permissions, or the key lacks that level (step 3, parts 1 to 3) |
 | `Network error` | cannot reach `IGNITION_URL` (also fails the first-run spec fetch) | wrong port or container-internal hostname used from the host |
+| 404 on `gateway-info` or on the first spec fetch | gateway too old: no `/data/api/v1` | stop; tell the user the gateway is unsupported |
 | `Path error` | path not in the cached spec | check `.ign/api_reference/INDEX.md`; `ign openapi fetch` if the gateway was upgraded |
 
 `ign openapi docs` is the endpoint reference for `ign api` work. Read `.ign/api_reference/INDEX.md` before calling a raw endpoint.
@@ -127,7 +130,7 @@ These are not style preferences. They protect the gateway and the token.
 1. `ign` is the sole writer of Ignition files. Never create or edit anything under `config/resources/**` or `projects/**` with an editor, a heredoc, `sed`, `cp`, or a Python script. The models in `ignition_gen_sdk` are the only sanctioned serializer.
 2. No `curl`, `wget`, `httpx`, or `requests` against the gateway. Use `ign api METHOD PATH [--json ... | --file ...]`. Raw clients put the token in argv, shell history and logs.
 3. The token never appears in argv, command output, logs, commit messages, or chat. Do not `cat .env`. Do not echo `$IGNITION_API_TOKEN`.
-4. A missing CLI capability is an SDK bug. If no verb or option expresses the shape needed, fix the Pydantic model or add the option in the `ignition-gen-sdk` repository (with a test), then run the CLI. Never hand-write JSON to fill the gap, and never call `ProjectDiskBackend` or the models from a one-off script to route around the CLI.
+4. A missing CLI capability is a gap to report, not to route around or repair. If no verb or option expresses the shape needed, stop that operation and report it to the user: the missing verb or option, the commands you checked (`ign <group> --help`, the `ign api` resource path), and what remains undone. Do not read, edit, clone, upgrade or reinstall `ignition-gen-sdk` to close the gap unless the user asks for SDK work. Never hand-write JSON to fill the gap, and never call `ProjectDiskBackend` or the models from a one-off script to route around the CLI.
 5. Disk writes need a scan. Every disk-writing verb scans by default; only pass `--no-scan` when the gateway is deliberately offline, and then tell the user a scan is still owed.
 
 Full text with rationale: `references/hard-rules.md`.
@@ -154,7 +157,7 @@ Full text with rationale: `references/hard-rules.md`.
 [ ] .env present in cwd with IGNITION_URL + IGNITION_API_TOKEN (name:secret)
 [ ] API key has a security level listed in Gateway Write Permissions; secure connections off if IGNITION_URL is http://
 [ ] .env and .ign/ gitignored
-[ ] ign api GET /data/api/v1/gateway-info answers (spec fetched to .ign/openapi.json)
+[ ] ign api GET /data/api/v1/gateway-info answers (spec fetched to .ign/openapi.json); a 404 means the gateway is too old: stop
 [ ] ign provider names lists providers (client generated)
 [ ] ign openapi docs rendered .ign/api_reference/
 [ ] backend determined: disk (data dir visible) or API-only

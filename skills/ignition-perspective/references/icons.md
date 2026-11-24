@@ -1,9 +1,9 @@
 # Icons
 
-## Where the sprites live in 8.3
+## Where the sprites live
 
-8.1 kept icon sprites on disk under `webserver/webapps/main/res/perspective/icons/`.
-8.3 does not; they ship inside the module:
+Older versions kept icon sprites on disk under `webserver/webapps/main/res/perspective/icons/`.
+Current versions do not; they ship inside the module:
 
 ```
 user-lib/modules/Perspective-module.modl        (zip)

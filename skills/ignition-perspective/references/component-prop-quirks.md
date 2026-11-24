@@ -1,4 +1,4 @@
-# Component prop and event quirks (8.3)
+# Component prop and event quirks
 
 Verified live; each one fails silently when wrong.
 

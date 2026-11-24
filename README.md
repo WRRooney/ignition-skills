@@ -52,7 +52,7 @@ A hook that blocks direct writes to `config/resources/**` and `projects/**`, so 
 the only writer of gateway files. Turn it on or off any time (Claude Code and Hermes):
 
 ```bash
-python3 .agents/skills/ignition-guardrails/guardrails.py on     # or: off, status
+python3 .agents/skills/ignition-guardrails/scripts/guardrails.py on     # or: off, status
 ```
 
 `install.sh --hook` does the same during install.
@@ -63,11 +63,13 @@ python3 .agents/skills/ignition-guardrails/guardrails.py on     # or: off, statu
 |---|---|
 | `ignition-setup` | Install `ign`, configure `.env`, verify the gateway, the rules every other skill assumes |
 | `ignition-tag` | Tags, UDT types and instances, alarms |
-| `ignition-view` | Perspective views, bindings, transforms, pages, session props, scripts, style classes, themes, runtime validation |
+| `ignition-perspective` | Perspective views, bindings, transforms, pages, session props, style classes, themes, runtime validation, the `ia.*` component inventory and icons |
+| `ignition-scripts` | Project library scripts, gateway and session event scripts, API correctness audit |
+| `ignition-queries` | Named queries |
 | `ignition-provider` | Tag provider CRUD and the resources/projects API rules |
+| `ignition-device` | OPC UA device connections and Programmable Device Simulator programs |
 | `ignition-db` | Database connections, alarm journals, JDBC drivers, password handling |
 | `ignition-api` | Raw `/data/api/v1/*` calls, the OpenAPI spec, gateway logs |
-| `ignition-component` | The `ia.*` component inventory and valid icon glyphs |
 | `ignition-manifest` | Push manifests and `ign diff` for idempotent writes |
 | `ignition-disk` | Read-only inspection of `config/resources/` and `projects/`, scans |
 | `ignition-guardrails` | Turn the write guard on or off for the current host |

@@ -5,8 +5,8 @@
 Custom session props are schema-declared per project in
 `projects/<name>/com.inductiveautomation.perspective/session-props/props.json`
 (`ign session-props declare`). There is no runtime API that creates one;
-`system.perspective.setSessionProperty` / `getSessionProperty` do not exist in
-8.3, and writing `self.session.custom.nav.selected = x` for an undeclared prop
+`system.perspective.setSessionProperty` / `getSessionProperty` do not exist,
+and writing `self.session.custom.nav.selected = x` for an undeclared prop
 has nowhere to land.
 
 ```json

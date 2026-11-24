@@ -1,6 +1,6 @@
 # Model shapes the SDK enforces
 
-Wire shapes Ignition 8.3 accepts; the Pydantic models reject the wrong form at
+Wire shapes Ignition accepts; the Pydantic models reject the wrong form at
 author time.
 
 ## Events live under a category layer

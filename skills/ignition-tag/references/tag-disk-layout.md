@@ -42,7 +42,7 @@ signature. Path segments are percent-encoded per segment (`light:0` becomes
   `tagType: "Unknown"`.
 - `GET /data/api/v1/resources/ignition/tag-type-definition/...` is rejected;
   there is no per-resource read. Read back with
-  `/tags/export?provider=default&recursive=true&includeUdts=true`, where types
+  `/tags/export?provider=default&recursive=true&includeUdts=true&type=json`, where types
   appear under a synthetic `_types_/<path>/` folder.
 - Every config scan can log `Tag already exists, and 'abort' collision policy
   has been specified` for types in a secured provider; the scan-driven edit is

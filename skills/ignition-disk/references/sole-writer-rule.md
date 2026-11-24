@@ -34,8 +34,8 @@ All of them, not just the editor tools:
 
 That last one matters: the CLI is the interface. Calling a backend class from
 a scratch script skips the CLI's validation, dry run, layer guard, JWE guard,
-and scan handling, and leaves the gap in place. A missing capability is a CLI
-bug: add the option with a test, then run the CLI.
+and scan handling, and leaves the gap in place. A missing capability is reported
+to the user, not worked around (see below).
 
 ## What `ign` enforces at its write path
 
@@ -60,5 +60,7 @@ read path breaks routing.
 
 ## When the shape is missing
 
-Stop. Add or fix the Pydantic model in the SDK with a fixture test, add the
-CLI option, then emit through `ign`. Do not fall back to writing the file.
+Stop that operation. Tell the user which verb or option is missing, which
+commands you checked (`ign <group> --help`, the `ign api` resource path), and
+what remains undone. Do not fall back to writing the file, and do not read,
+edit, clone or upgrade `ignition-gen-sdk` unless the user asks for SDK work.
