@@ -29,9 +29,8 @@ Learned rules are written to the user's project, never to the installed plugin:
     LEARNINGS.md        pattern table and proposed blocks (written by the reflect step)
 ```
 
-If `.agents/skills/ignition-local/SKILL.md` does not exist, create it from the template in the `ignition-setup` skill first. A lesson that is true of Ignition 8.3 in general, not of this project, still lands in `ignition-local` first; note it as an upstream candidate so the user can send it to the public skills repository.
+If `.agents/skills/ignition-local/SKILL.md` does not exist, create it from the template in the `ignition-setup` skill first. A lesson that is true of Ignition in general, not of this project, still lands in `ignition-local` first; note it as an upstream candidate so the user can send it to the public skills repository.
 
-This skill uses plain git and plain files. It works the same under any agent host; hosts differ only in how the user invokes it (a slash command, a mention by name, or a request in prose).
 
 ## Step 1: Snapshot (`skill-learn start <topic>`)
 

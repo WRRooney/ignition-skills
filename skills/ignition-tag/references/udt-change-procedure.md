@@ -50,28 +50,22 @@ It lists every affected type in root-down order: the edited type, its descendant
 
 ### Adding a member to a type with descendants
 
-When a child type already declares a member and the same member is added to its parent,
-what happens depends on how the parent is written (verified on a live gateway, November 2026):
+Write type changes only with `ign tag udt-type` and the `set-udt-*` verbs, never by importing
+a `_types_` body. An import renames a child's same-named member to `<name>_duplicate_N` and
+moves instance overrides onto the duplicate; `udt-type` turns the child's member into an
+override of the inherited one instead.
 
-| Parent written with | Result on the child | Instance overrides of that member |
-|---|---|---|
-| `ign tag udt-type` or a `set-udt-*` verb (disk write + config scan) | No rename. The child's member becomes an override of the inherited one and keeps its own settings | Kept |
-| `/tags/import` with a `_types_` body (`ign tag import`, a Designer JSON import) | Renamed to `<name>_duplicate_1` (then `_2`, ...) next to the inherited member. The child's file on disk still shows the old name, so the gateway and disk disagree | Moved onto the instance's `_duplicate_N` member |
-| `/tags/import` with parent and child together, or the child stripped first | No rename | Lost |
-
-So write type changes only with `ign tag udt-type` and the `set-udt-*` patch verbs, never
-by importing a `_types_` body. Check for collisions before the write anyway:
+Check for collisions before the write:
 
 ```bash
 python3 <skill-dir>/scripts/udt_graph.py .ign/tags-default.json collide Equipment/Motor Status/Fault Speed
 ```
 
-Member paths are relative to the type and matched case-insensitively. The output lists each
-descendant type that declares the member and each instance that overrides it; exit 1 means
-collisions. Each listed child keeps its own definition as an override, so its settings win
-over the parent's new ones. Include the collisions in the approval request and ask whether
-each child's settings should stay as overrides or be removed so the parent's definition
-applies. Removing them is a separate child edit, written after the parent lands.
+Member paths are relative to the type and matched case-insensitively; exit 1 means
+collisions. Each listed child type keeps its own definition as an override, so its settings
+win over the parent's. In the approval request, ask whether each child's settings stay as
+overrides or are removed so the parent's definition applies. Removing them is a separate
+child edit, written after the parent lands.
 
 Then **stop and ask the user for approval**, showing:
 
@@ -116,25 +110,15 @@ It lists every type member, instance member, and tag whose name ends in `_duplic
 
 ## Cleaning up `_duplicate_N` members
 
-Duplicates come from a parent gaining a member a child already had through `/tags/import`,
-or from an import that collided with existing tags (`tag-import.md`). Cleanup is an edit
-like any other: run `impact` on each child type that holds one, and get the user's approval
-first. Show which instances carry values on the duplicate, because cleanup drops them.
-
-Verified on a live gateway for a duplicate created by an import:
-
-- Rewriting the child unchanged with `ign tag udt-type` does nothing; the duplicate stays.
-- Rewriting the child with the member removed, or reduced to an override that keeps only
-  the keys that differ from the parent (`udt-member-inheritance.md`), clears the duplicate
-  from the child and from its instances.
-- Instance values that had moved onto the duplicate are lost in that step.
-
-Procedure:
+Cleanup is an edit: run `impact` on each child type that holds a duplicate and get the
+user's approval first. Instance values on the duplicate are dropped by step 2, so list them
+in the request.
 
 1. Record the instances' values and overrides on the duplicate (from the export).
 2. Rewrite each affected child type, root down, with `ign tag udt-type`: drop the member if
-   the parent's definition should apply, or keep only the differing keys as an override.
+   the parent's definition should apply, or keep only the keys that differ as an override
+   (`udt-member-inheritance.md`). Rewriting the child unchanged does not clear a duplicate.
 3. Re-apply the recorded instance overrides on the real member name (`ign tag import` of the
    instances, `udt-instances.md`; overrides must restate `valueSource`,
    `udt-instance-overrides.md`).
-4. Re-export and run `duplicates` again; it should report 0.
+4. Re-export and run `duplicates`; it should report 0.
