@@ -50,7 +50,7 @@ ign event replace-text --project Demo --kind gateway.update --old readCache --ne
 ign event delete --project Demo --kind gateway.timer --name Poll
 ```
 
-Each event is a plain `<function>.py` + `resource.json` (the old binary `data.bin` is gone); the
+Each event is a plain `<function>.py` + `resource.json`; the
 file must define the Designer's exact function signature. Kinds, settings, singleton vs
 named, and gotchas: `references/event-scripts.md`.
 
@@ -61,8 +61,7 @@ ign builtins audit --project Demo          # system.* calls and expression funct
 ign builtins audit --allow cirruslink      # accept a module-provided namespace
 ```
 
-Run the audit after writing any script, including script bodies inside views. Code that
-passes model validation can still fail at runtime because a function existed only in an older version.
+Run the audit after writing any script, including script bodies inside views.
 Rename table and common traps: `references/api-correctness.md`.
 
 ## References

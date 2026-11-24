@@ -73,5 +73,5 @@ browser session; the click and `onStartup` chain does not fire headlessly.
 - A docked view survives same-tab navigation, which makes it the relay for
   data that must not appear in the URL. Two docks may carry the same request
   handler if each guards `if seed:` so only the dock holding a seed replies.
-- Rejected: one-shot `session.custom` seeds (unbookmarkable, wrong across
-  tabs, need self-clearing consumers).
+- Do not relay with one-shot `session.custom` seeds (unbookmarkable, wrong
+  across tabs, need self-clearing consumers).

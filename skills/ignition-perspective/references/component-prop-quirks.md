@@ -1,6 +1,6 @@
 # Component prop and event quirks
 
-Verified live; each one fails silently when wrong.
+Each one fails silently when wrong.
 
 ## Unknown props are kept and ignored
 

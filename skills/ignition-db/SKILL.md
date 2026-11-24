@@ -50,10 +50,10 @@ Notes on the verbs:
 
 ## Passwords
 
-Never put an encrypted credential blob in a config file. Ignition stores
-passwords on disk as an AES-256-GCM JWE object; the SDK refuses any payload
-that carries the five JWE keys and raises a validation error before any HTTP
-call (`references/jwe-refusal.md`).
+Never put an encrypted credential blob (the on-disk JWE `password` object)
+in a config file. The SDK refuses any payload that carries the five JWE keys
+and raises a validation error before any HTTP call
+(`references/jwe-refusal.md`).
 
 Plaintext password resolution for `create`/`update`, in order:
 
@@ -112,9 +112,7 @@ history. Create the database connection first.
 | `--confirm` | off | Skip the POST confirmation prompt |
 | `--scan/--no-scan` | scan | Post `/scan/config` afterwards |
 
-`create` wraps the resource in a one-element JSON array because
-`POST /data/api/v1/resources/ignition/alarm-journal` rejects a bare object
-with `400 Not a JSON Array`. The journal registers live; the target database
+The journal registers live; the target database
 gets its tables on first event. Column encodings, the indexes an analysis page
 needs, and query-caching rules are in `references/alarm-journal-sql.md`.
 

@@ -11,8 +11,7 @@ Tag-verb specifics:
 
 - Every disk-writing tag verb (`push --backend disk`, `udt-type`,
   `udt-instance`, `set-udt-member-prop`, `set-udt-type-prop`, `delete`) scans
-  by default and takes the config scan lock first. `tag import` scans too, even
-  though the import registers live, so disk and gateway agree.
+  by default and takes the config scan lock first. `tag import` scans too.
 - Success output for disk verbs is `Written to disk: <path>` with no separate
   scan line; a failed scan or lock prints `WARNING:` on stderr and the command
   still exits 0 because the file is already on disk.

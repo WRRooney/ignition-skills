@@ -31,4 +31,4 @@ Then round-trip: export the type with `ign api GET "/data/api/v1/tags/export?pro
 
 ## Scan lock
 
-Disk-writing tag verbs acquire the gateway's config scan lock before writing and release it with the scan, so the gateway does not read a half-written file and apply its own collision policy. A failed lock is a `WARNING:` on stderr; the write still happens.
+Disk-writing tag verbs take the config scan lock before writing and release it with the scan. A failed lock is a `WARNING:` on stderr; the write still happens.

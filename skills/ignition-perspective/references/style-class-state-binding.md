@@ -41,8 +41,7 @@ There is no REST read-back for style classes: verify by disk shape, a 2xx
 
 When one state drives several components, compute the class string once on
 `custom.styleClasses` (expression binding) and give every consumer a plain
-property binding on `view.custom.styleClasses`. One expression, N property reads,
-one edit site.
+property binding on `view.custom.styleClasses`.
 
 ## A style class can paint an SVG
 
@@ -55,13 +54,12 @@ and let the class supply color; one artwork then serves every state and theme.
 Prefer the module's built-in symbol variables over invented ones:
 `--symbolStroke--running`, `--symbolFill--running`, `--symbolStroke--stopped`,
 `--symbolFill--stopped`, `--symbolStroke--default`, `--pipeStroke`,
-`--pipePrimaryFill`. They are defined nowhere on disk (not in any theme
-`variables.css`); they ship inside the Perspective module, so hand-drawn geometry
-tracks the stock `ia.symbol.*` palette in every theme. Write `var(--symbolStroke--default)`;
+`--pipePrimaryFill`. They ship inside the Perspective module and appear in no
+theme `variables.css`; use them anyway. Write `var(--symbolStroke--default)`;
 a bare `--symbolStroke--default` is a silent no-op.
 
-`opacity` is not a state channel: dimming a stopped state also mutes the stroke
-and muddies a high-performance palette. Read state purely by color.
+`opacity` is not a state channel: dimming a stopped state also mutes the stroke.
+Read state purely by color.
 
 ## The project stylesheet
 

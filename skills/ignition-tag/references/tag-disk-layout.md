@@ -19,9 +19,8 @@ signature. Path segments are percent-encoded per segment (`light:0` becomes
 ## File formats
 
 - `tags.json` under a standard provider is a flat array of tag objects. The
-  `usr` envelope appears only under managed providers (MQTT drivers), where it
-  is the user-override layer over driver-supplied config; wrapping
-  standard-provider files in `usr` is wrong.
+  `usr` envelope appears only under managed providers (MQTT drivers); never
+  wrap standard-provider files in `usr`.
 - `udts.json` is always a flat array. An instance file replaces the folder
   wholesale, so include every instance the folder should end up with.
 - The Designer writes a meta-only override of an inherited member as
@@ -29,8 +28,8 @@ signature. Path segments are percent-encoded per segment (`light:0` becomes
   a UDT instance (`udt-member-inheritance.md`).
 - A member `AtomicTag` inside a type carries `dataType` and `valueSource`;
   `Folder` members carry neither. Parameters are
-  `{"<name>": {"dataType": "String", "value": "..."}}`; `exclude_none` drops a
-  `"value": null` default and the gateway tolerates the absence.
+  `{"<name>": {"dataType": "String", "value": "..."}}`; a `"value": null`
+  default may be omitted.
 
 ## Traps
 
@@ -44,10 +43,9 @@ signature. Path segments are percent-encoded per segment (`light:0` becomes
   there is no per-resource read. Read back with
   `/tags/export?provider=default&recursive=true&includeUdts=true&type=json`, where types
   appear under a synthetic `_types_/<path>/` folder.
-- Every config scan can log `Tag already exists, and 'abort' collision policy
-  has been specified` for types in a secured provider; the scan-driven edit is
-  submitted with policy abort. When abort bites for real, instances export as
-  `tagType: Unknown` with no members. Only `/tags/import` accepts
+- Config scans can log `Tag already exists, and 'abort' collision policy
+  has been specified` for types in a secured provider. It matters only when
+  instances then export as `tagType: Unknown` with no members. Only `/tags/import` accepts
   `collisionPolicy`; tooling defaults to `Overwrite`.
 
 ## Verify

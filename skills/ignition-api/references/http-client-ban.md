@@ -10,11 +10,8 @@ into:
 - hook and audit logs that record executed commands
 - the agent's own tool output and transcript
 
-`ign api` closes all four channels. It loads the token once through
-pydantic-settings (process environment first, then `.env` in the current
-directory), stores it only inside the httpx client's header dict, and scrubs
-it from anything it prints. The `Settings` object's `repr` and `str` replace
-the token with `[REDACTED]`.
+`ign api` closes all four channels. It loads the token from the process
+environment first, then `.env` in the current directory, and never prints it.
 
 ## Rules for the agent
 

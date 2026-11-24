@@ -41,7 +41,7 @@ use the path the plugin reports for this skill instead of `.agents/skills/`.
 ## When the user wants to hand-edit a gateway file
 
 Turn the guard off, let them edit, then turn it on again. Do not work around the guard
-with a different write path; that is the exact behavior it exists to stop.
+with a different write path.
 
 ## Verify
 

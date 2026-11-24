@@ -35,18 +35,14 @@ five: `chart`, `display`, `input`, `navigation`, `symbol` (61 types total).
 
 Embedding components (Embedded View, Flex Repeater, View Canvas, Accordion,
 Carousel) carry `ia.display.*` type strings, so they list under `display`;
-there is no `embedding` palette on the command line even though the models
-live in their own file. The symbol prefix is singular (`ia.symbol.`).
+there is no `embedding` palette. The symbol prefix is singular (`ia.symbol.`).
 
 ## How types map to models
 
 Each type string is a `Literal` on exactly one Pydantic class under
-`ignition_gen_sdk/models/views/components/`. The package's `ComponentUnion` is a
-callable-discriminated union: it reads `type` from incoming JSON, routes to the
-matching class, and falls back to `GenericComponent` (extra fields allowed, no
-`Literal` on `type`) for any unknown or future `ia.*` string. `ign component
-list` derives its inventory from the same union entries, so the CLI output and
-the model set cannot drift.
+`ignition_gen_sdk/models/views/components/`. Any unknown `ia.*` string falls
+back to `GenericComponent` (extra fields allowed). `ign component list` matches
+the model set exactly.
 
 | File | Palette | Classes |
 |---|---|---|

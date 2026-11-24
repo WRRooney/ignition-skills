@@ -1,20 +1,18 @@
 # Hard rules
 
-Each rule exists because breaking it once caused real damage on a live gateway.
-
 ## 1. The SDK is the sole writer of Ignition files
 
 Files under `config/resources/**` and `projects/**` are created and changed only by `ign` verbs, which serialize from validated Pydantic models. Banned vectors, all of them: editor Write/Edit tools on those paths, shell redirection (`>`, `>>`, `tee`), `sed -i`, `cp`, `mv`, `rm`, and Python `json.dump` or `write_text` aimed at those paths.
 
-Why: hand-written config hallucinates shapes the gateway rejects or, worse, accepts and misinterprets. A view whose `events` block lacked the `component` layer would not open; the file was valid JSON and the scan reported nothing. The model is the single source of truth: if a shape is not modeled, it is not written.
+If a shape is not modeled, do not write it: the gateway rejects or silently misreads hand-written config, and the scan reports nothing.
 
 Deletion is included. `ign tag delete` and `ign view delete` are the sanctioned removers; `git checkout` and `git clean` on those paths are version-control operations and are fine, followed by a scan.
 
 ## 2. The CLI is the interface, not just the package
 
-Calling `ProjectDiskBackend`, `DiskBackend` or a model from a one-off script to route around a missing CLI option is not acceptable even though it uses SDK code. It skips the CLI's validation, `--dry-run`, scan handling and manifest recording, and leaves the gap in place for the next agent.
+Calling `ProjectDiskBackend`, `DiskBackend` or a model from a one-off script to route around a missing CLI option is not acceptable: it skips the CLI's validation, `--dry-run`, scan handling and manifest recording.
 
-A missing capability is a gap to report, not to repair mid-task. If no verb or option expresses the shape needed, stop that operation and report it to the user: the missing verb or option, the commands you checked (`ign <group> --help`, the `ign api` resource path), and what remains undone. Do not read, edit, clone, upgrade or reinstall `ignition-gen-sdk` to close the gap unless the user asks for SDK work. Extending the SDK is a separate task the user starts. The only sanctioned non-CLI callers are committed generators under `.ign_tools/`, run via `ign tools run`, which are reviewable seeds that use the same models.
+A missing capability is a gap to report, not to repair mid-task. If no verb or option expresses the shape needed, stop that operation and report it to the user: the missing verb or option, the commands you checked (`ign <group> --help`, the `ign api` resource path), and what remains undone. Do not read, edit, clone, upgrade or reinstall `ignition-gen-sdk` to close the gap unless the user asks for SDK work. The only sanctioned non-CLI callers are committed generators under `.ign_tools/`, run via `ign tools run`, which are reviewable seeds that use the same models.
 
 ## 3. No raw HTTP clients
 

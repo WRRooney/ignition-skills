@@ -111,9 +111,7 @@ None of these is a prerequisite. The first thing that needs the spec (a typed
 verb such as `ign provider names`, `ign api` path validation, `ign openapi
 docs`) fetches it to `.ign/openapi.json` and, for typed verbs, generates the
 client; expect a few seconds and a one-time "Generating API client" line on
-stderr. The generator (`openapi-python-client`) is a core dependency of
-`ignition-gen-sdk`; there is no extra to install. `fetch` only refreshes after a
-gateway upgrade.
+stderr. Nothing extra needs installing. Run `fetch` only after a gateway upgrade.
 
 `ign openapi docs` writes one markdown file per API tag plus `INDEX.md` (tag
 table with endpoint counts) and `AUTH.md` (header auth template). Read
@@ -183,7 +181,7 @@ and cautions: `references/security-properties.md`.
 | `references/resources-array-body.md` | Resources API wants a JSON array body; element shape; signatures; which read paths answer; live registration |
 | `references/put-projects-full-replace.md` | `PUT /projects/{name}` resets omitted fields; create via `POST /projects`; recovery |
 | `references/audit-log-filters.md` | `system.util.queryAuditLog` filter behavior on a database audit profile |
-| `references/alarm-pipeline-format.md` | `data.bin` binary layout and why `replace-text` is safe |
+| `references/alarm-pipeline-format.md` | `data.bin` location, whole-entry replacement rule, script block format, verification |
 | `references/alarm-scripting-surface.md` | `system.alarm` rosters and pipelines: what exists, what does not, how to verify |
 | `references/gateway-logs.md` | `ign logs` as the first diagnostic: messages to recognize, persistence, proving a script ran |
 | `references/gateway-restart.md` | Restart over REST, why `pending: []` says nothing, when a restart is actually needed |

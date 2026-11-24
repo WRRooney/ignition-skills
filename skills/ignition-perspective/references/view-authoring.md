@@ -96,7 +96,7 @@ ign view delete --project Demo --view-path Components/PumpFaceplate --dry-run
 ```
 
 `replace-text` matches the raw file, so quotes inside strings are escaped and `=`
-is stored as `=`. Prefer a token with neither and let `--expect` catch a miss.
+is stored as `\u003d`. Prefer a token with neither and let `--expect` catch a miss.
 Both verbs re-validate through the `View` model before writing.
 
 ## View naming and prop scopes

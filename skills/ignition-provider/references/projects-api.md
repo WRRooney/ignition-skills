@@ -6,8 +6,8 @@ ignition-api skill:
 [`put-projects-full-replace.md`](../../ignition-api/references/put-projects-full-replace.md).
 
 In short: `PUT /projects/{name}` is a full replace, so read the record first
-and PUT the complete object (a partial body has blanked `title`, flipped
-`inheritable` to `false`, and emptied a child's `parent`); create projects with
+and PUT the complete object (a partial body blanks `title`, flips
+`inheritable` to `false`, and empties a child's `parent`); create projects with
 `POST /projects` carrying `defaultDb` and `tagProvider`, never by scaffolding
 `project.json`; a damaged record is fastest restored from git plus
 `/scan/projects`.

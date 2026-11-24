@@ -33,8 +33,8 @@ session ships as its default.
 A bound prop that gates rendering or encodes an authorization verdict IS read
 between mount and the moment its binding resolves. If the stored value is a
 decided one (a Designer save persisted `1` where `-1` meant "undecided"), every
-mount routes to the protected view until the script transform finishes; that is a
-flash of protected content, and a script transform is the slowest tier. Persist
+mount routes to the protected view until the script transform finishes (a flash
+of protected content). Persist
 the undecided sentinel, never a decided value, and audit gate props after every
 Designer sweep. A `-1 -> 1` diff on a gate prop is a security regression that
 looks like snapshot noise.

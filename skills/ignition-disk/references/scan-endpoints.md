@@ -1,7 +1,6 @@
 # Scan endpoints
 
-The gateway keeps an in-memory picture of both trees and refreshes it on a
-scheduled tick, on restart, or when asked. After any on-disk change, ask:
+After any on-disk change, request a scan:
 
 | Changed | Endpoint |
 |---|---|
@@ -18,9 +17,8 @@ are idempotent. Call them manually only after a change `ign` did not make
 (git checkout or clean, a verb run with `--no-scan`, a failed automatic scan).
 `ign` write verbs already scan, so do not add a second scan after them, and
 never use a scan as a health check (use `ign api GET /data/api/v1/gateway-info`). Neither takes a
-body or query parameters; only `/tags/import` accepts a `collisionPolicy`, so
-a scan applies the gateway's internal abort policy to anything it re-reads
-(hence the lock below).
+body or query parameters, so a scan applies the gateway's abort collision
+policy to anything it re-reads (use the lock below).
 
 ## Response
 

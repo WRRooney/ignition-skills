@@ -3,11 +3,8 @@
 ## Native drag events never fire
 
 `events.dom` lists `onDragStart`, `onDrag`, `onDragOver`, `onDragEnter`,
-`onDragLeave`, `onDragEnd`, and `onDrop`. That is React's synthetic event list,
-not a promise: nothing in the client sets `draggable="true"` on any element, so
-the browser never starts a drag and none of those handlers run. A real
-browser-level drag produces only `mouseenter`, which proves the wiring is fine and
-the negative is real.
+`onDragLeave`, `onDragEnd`, and `onDrop`. None of them run: no element is
+`draggable`, so the browser never starts a drag.
 
 ## Simulate it with mouse events
 

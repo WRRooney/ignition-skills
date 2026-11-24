@@ -4,10 +4,9 @@ Every file under `config/resources/**` and `projects/**` is created and
 edited only by an `ign` verb, which serializes from a validated Pydantic
 model. The agent never writes those paths itself.
 
-## Why
+## Shapes hand-written JSON gets wrong
 
-Hand-written or passed-through JSON hallucinates shapes the gateway silently
-rejects. Verified examples:
+The gateway often rejects these silently:
 
 - Perspective `events` emitted as `{"events": {"onActionPerformed": {...}}}`
   instead of `{"events": {"component": {"onActionPerformed": {...}}}}`; the
@@ -17,9 +16,6 @@ rejects. Verified examples:
 - Bindings with a constant expression where a plain prop value belongs.
 - Embedded view params under `props.viewParams` (ignored) instead of
   `props.params`.
-
-A model with a fixture test fixes the shape once for every future write. A
-hand edit fixes one file and leaves the bug for the next.
 
 ## Banned vectors
 
@@ -32,10 +28,9 @@ All of them, not just the editor tools:
 - one-off scripts that import the SDK's disk backends or models to route
   around a missing CLI option
 
-That last one matters: the CLI is the interface. Calling a backend class from
-a scratch script skips the CLI's validation, dry run, layer guard, JWE guard,
-and scan handling, and leaves the gap in place. A missing capability is reported
-to the user, not worked around (see below).
+The CLI is the interface: a backend class called from a scratch script skips
+the CLI's validation, dry run, layer guard, JWE guard, and scan handling.
+Report a missing capability to the user instead (see below).
 
 ## What `ign` enforces at its write path
 

@@ -33,9 +33,8 @@ Everything in `.ign/` is regenerable. Gitignore it together with `.env`.
 
 ## Token handling
 
-- `Settings.__repr__` prints `api_key=[REDACTED]`; the token is never formatted into error messages.
 - `ign api` output passes through a scrub that masks any `name:secret`-shaped string.
-- Missing or malformed credentials surface as `Auth error` with the hint `Check IGNITION_API_TOKEN (env or .env)`. The underlying validation message is deliberately not printed, so the token value cannot leak through an exception.
+- Missing or malformed credentials surface as `Auth error` with the hint `Check IGNITION_API_TOKEN (env or .env)`; the validation detail is not printed.
 
 ## Checking the environment without leaking it
 

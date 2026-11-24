@@ -15,11 +15,10 @@
   the function inside `try/except` and logs `traceback.format_exc()`; remove
   the probe afterwards.
 - Never `except Exception: return []` around a `system.*` call in a library
-  function. Every empty-result mystery traced back to a swallowed exception.
-  Log with a named logger (`system.util.getLogger("plant.nav")`) and return
+  function. Log with a named logger (`system.util.getLogger("plant.nav")`) and return
   with the error visible; the logger name is then searchable with `ign logs`.
 - Library scripts hot-reload for Perspective scope but not for gateway or
-  tag-event scope (`resource-scope-and-reload.md`).
+  tag-event scope (ignition-perspective `resource-scope-and-reload.md`).
 
 ## Tag event scripts
 

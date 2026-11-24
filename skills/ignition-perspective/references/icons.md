@@ -2,8 +2,7 @@
 
 ## Where the sprites live
 
-Older versions kept icon sprites on disk under `webserver/webapps/main/res/perspective/icons/`.
-Current versions do not; they ship inside the module:
+Icon sprites are not on disk; they ship inside the module:
 
 ```
 user-lib/modules/Perspective-module.modl        (zip)
@@ -16,8 +15,7 @@ user-lib/modules/Perspective-module.modl        (zip)
 Two traps:
 
 1. They are `:target` sprites, not `<symbol>` sheets. Each glyph is
-   `<g class="icon" id="NAME">`; a `<symbol id=...>` regex returns zero and reads
-   as "this version ships no icons".
+   `<g class="icon" id="NAME">`; a `<symbol id=...>` regex returns zero.
 2. The `symbol_*` sheets use nested `<svg id=...>` and are addressed by the
    `ia.symbol.*` components, not by an icon path.
 
@@ -31,8 +29,8 @@ ign icons list --modl /path/Perspective-module.modl
 ign icons list --container <docker-container> # copies the module out with docker cp
 ```
 
-The module is read via `docker cp`, never `docker exec cat`: exec mangles the
-binary stream quietly, both zips still open, and every sprite reads back empty.
+The module is read via `docker cp`, never `docker exec cat`: exec corrupts the
+binary and every sprite reads back empty.
 The gateway HTTP API cannot serve `/res/perspective/icons/...`.
 
 ## An invalid path crashes the component

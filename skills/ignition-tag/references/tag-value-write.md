@@ -20,7 +20,7 @@ A value set through `/tags/import` does not fire the tag's `valueChanged` event 
 ign tag import --file body.json --provider default --path Tanks/T01 --collision-policy Overwrite --confirm
 ```
 
-Response: `Import complete: successCount=1 failureCount=0`. `--path` is the parent folder; the tag `name` joins it to form the full path. Verified on UDT member tags (for example self-resetting command booleans inside an instance); see above for standalone tags.
+Response: `Import complete: successCount=1 failureCount=0`. `--path` is the parent folder; the tag `name` joins it to form the full path.
 
 Before writing inside a UDT instance, export the parent folder first (`ign api GET "/data/api/v1/tags/export?provider=default&path=Tanks%2FT01&recursive=true&type=json"`) so the structure can be restored if a fuller definition ever overwrote bindings.
 

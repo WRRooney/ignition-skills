@@ -11,7 +11,7 @@ Even when the type already declares the member as `memory`, an instance override
  "tags": [{"name": "Speed", "tagType": "AtomicTag", "valueSource": "memory", "value": 1200.0}]}
 ```
 
-Instance overrides write every nested node as `tagType: "AtomicTag"` regardless of what the member is in the type; that is the Designer convention and the models accept it.
+Instance overrides write every nested node as `tagType: "AtomicTag"` regardless of what the member is in the type.
 
 ## 2. An `alarms` override replaces the alarm; omitted keys take Ignition defaults
 

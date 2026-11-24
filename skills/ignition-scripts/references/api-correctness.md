@@ -1,9 +1,7 @@
 # Scripting and expression API correctness
 
-The scripting and expression API changed substantially from older Ignition versions. Code
-that passes model validation can still throw at runtime because a function only existed in
-an older version, or never existed at all. Validate against the catalog, not memory and not
-sample projects written for older gateways.
+Validate every function against the catalog, not memory and not sample projects written
+for older gateways; code that passes model validation can still throw at runtime.
 
 ## The catalog and the audit
 
@@ -53,7 +51,7 @@ from scripts already running on the gateway.
   function has no `self` and no session; keep it pure and do session I/O in the
   component's `onStartup` or action script. Declare the prop first with
   `ign session-props declare`.
-- `system.tag.browseTags` (7.x). Use
+- `system.tag.browseTags`. Use
   `system.tag.browse(path, {"tagType": "UdtInstance", "recursive": True}).getResults()`;
   each result is dict-like (`r["fullPath"]`, `r.get("typeId")`).
 - `system.db.runQuery` / `runNamedQuery` shapes changed; check the current `system.db` docs.
@@ -71,8 +69,8 @@ condition does match nested types. Results are dict-like (`r["fullPath"]`,
 `r["name"]`, `r.get("typeId")`, `r.get("dataType")`); a browse without a filter
 returns direct children only.
 
-Never swallow the browse: `except Exception: return []` turned a removed API
-into an "empty navigation" mystery. Log with a named logger
+Never swallow the browse: `except Exception: return []` hides a missing API
+as an empty result. Log with a named logger
 (`system.util.getLogger("plant.nav")`), then `ign logs --search plant.nav`
 after a real session shows the counts or the traceback.
 

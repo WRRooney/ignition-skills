@@ -45,8 +45,8 @@ Always read the screenshot (`--out`); the visible-text sample is a hint, not pro
 
 ## Blind spots
 
-- **`onStartup` never completes headlessly.** The session connects and closes on
-  browser exit before gateway-scope `onStartup` runs, so `view.custom.*` data set
+- **`onStartup` never completes headlessly.** The session closes before
+  gateway-scope `onStartup` runs, so `view.custom.*` data set
   by `onStartup` (a nav tree, KPI tiles) stays empty. Components that need no
   startup script render fine. Verify startup-driven views in a real browser or the
   Designer.
@@ -66,5 +66,4 @@ Always read the screenshot (`--out`); the visible-text sample is a hint, not pro
 
 The `runtime` extra (`uv tool install 'ignition-gen-sdk[runtime]'`, or
 `pip install -e '.[runtime]'` from a checkout) and `playwright install chrome`
-(uses the system Chrome channel). Exit 2 when absent. Core logic lives in
-`ignition_gen_sdk.validation.runtime` (`validate`, `verdict`, `warnings`).
+(uses the system Chrome channel). Exit 2 when absent.

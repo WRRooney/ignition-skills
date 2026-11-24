@@ -36,12 +36,9 @@ binding declared and polling in every session.
 ## An empty directory is still a resource
 
 Perspective treats the directory as the resource. A child holding an empty
-`page-config/` shadows every parent route; no scan helps, and it looks
-exactly like a stale cache that needs a restart. It is not. Delete the empty
-directory and the routes resolve at once. Empty directories usually come
-from a read command that created its target folder; the SDK's read paths
-never do this now, but check for one before suspecting anything else when a
-child route fails to resolve.
+`page-config/` shadows every parent route; no scan or restart helps.
+Delete the empty directory and the routes resolve at once. Check for one
+before suspecting anything else when a child route fails to resolve.
 
 ## Library scripts reload per scope
 

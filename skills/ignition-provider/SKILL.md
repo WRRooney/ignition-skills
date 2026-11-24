@@ -38,7 +38,7 @@ ign provider describe
 
 ## Config file shape (STANDARD provider)
 
-`create` and `update` take a JSON file containing the provider's `config` object. Minimal STANDARD provider, verified against a live gateway:
+`create` and `update` take a JSON file containing the provider's `config` object. Minimal STANDARD provider:
 
 ```json
 {
@@ -66,8 +66,8 @@ ign provider create --name Plant --config-file plant.json
 ## How the mutations work
 
 - `create` wraps the config into the resources-API element shape (`name`, `enabled`, optional `description`, `config`) inside a JSON array. The array wrapper is a requirement of every `resources/ignition/<type>` POST and PUT; a bare object is a 400. Details in `references/resources-api.md`.
-- The read and mutate verbs use a typed client generated from the gateway's OpenAPI spec. The first typed verb fetches the spec to `.ign/openapi.json` and generates the client on its own (a few seconds, with a one-time "Generating API client" message on stderr); no prior `ign openapi fetch` is needed, and the generator ships as a core dependency. `ign openapi fetch` only refreshes the spec after a gateway upgrade.
-- `update` and `delete` first call `get` to fetch the current `signature`, then send it with the change. The signature is an optimistic-concurrency token; a stale one is rejected.
+- The first typed verb fetches the spec to `.ign/openapi.json` and generates a client on its own (a few seconds, with a one-time "Generating API client" message on stderr); no prior `ign openapi fetch` is needed. Run `ign openapi fetch` only after a gateway upgrade.
+- `update` and `delete` first call `get` to fetch the current `signature`, then send it with the change. A stale signature is rejected.
 - `delete-bulk` takes a file holding a list of `{"name": ..., "signature": ...}` objects, so collect signatures with `get` first.
 - `create`, `update` and `delete` record a manifest entry (for `ign diff`) and then POST `/data/api/v1/scan/config`. A failed scan prints `WARNING:` on stderr and exits 0, because the mutation already landed. `delete-bulk` and `rename` neither scan nor record a manifest entry.
 - Resources created through the resources API register live; the scan only reconciles disk state.
@@ -98,7 +98,7 @@ A provider that was created disabled (`"enabled": false` in the element) shows i
 
 ## Projects share these rules
 
-Project CRUD (`/data/api/v1/projects`) is not wrapped by an `ign` verb yet; it goes through `ign api`. It shares the resources-API discipline and adds two traps: `PUT /projects/{name}` is a full replace that resets omitted fields (it has silently flipped `inheritable` to `false` and blanked `parent`), and a project must be created with `POST /projects`, never by scaffolding `project.json` on disk. See `references/projects-api.md` before touching a project record.
+Project CRUD (`/data/api/v1/projects`) is not wrapped by an `ign` verb; it goes through `ign api`. It shares the resources-API discipline and adds two traps: `PUT /projects/{name}` is a full replace that resets omitted fields (it silently flips `inheritable` to `false` and blanks `parent`), and a project must be created with `POST /projects`, never by scaffolding `project.json` on disk. See `references/projects-api.md` before touching a project record.
 
 ## Falling back
 

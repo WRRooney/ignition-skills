@@ -28,8 +28,7 @@ value.bind_property("props.text", "view.custom.level")
 ```
 
 Presentation (a class, a font size, a threshold) stays on the component: data to
-custom, presentation to component. Swapping one card for another then costs
-nothing; the new card binds to the same custom prop.
+custom, presentation to component.
 
 `vb.bind_custom_expression("isPending", 'indexOf({session.custom.q}, {view.params.tagPath}) >= 0')`
 is the expression sibling and runs the same syntax guard. Do not hand-build a
@@ -60,8 +59,7 @@ For a one or two tag write, do not call `system.tag.writeBlocking` from an event
 script. Bind `custom.<name>` with `bidirectional=True` and let the script assign
 `self.view.custom.<name> = v`. For a multi-value command, model the payload as one
 dict-shaped custom prop bound bidirectionally to a document tag plus a sibling
-trigger bool. The same script then works for every instance because the bindings
-are indirect through the view param.
+trigger bool, both bound indirectly through the view param.
 
 Bidirectional bindings write back once on mount; in an anonymous session on a
 write-protected provider that shows as a `Bad_ReadOnly` toast (environmental).
@@ -90,5 +88,4 @@ references, not bindings (`table-and-chart.md`).
 ## Fan-out
 
 When one state drives several components, compute the class string once on a
-view custom prop and property-bind every consumer to it: one expression, N
-property reads, one edit site.
+view custom prop and property-bind every consumer to it.

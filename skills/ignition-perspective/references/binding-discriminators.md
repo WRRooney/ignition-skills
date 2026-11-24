@@ -1,6 +1,6 @@
 # Binding JSON shapes: propConfig wrapper and discriminators
 
-Verified against gateway-written `view.json` files. Field names are exact.
+Field names are exact.
 Semantics and builder usage are in `bindings-and-transforms.md`; the enforced
 model rules are in `model-shapes.md`.
 

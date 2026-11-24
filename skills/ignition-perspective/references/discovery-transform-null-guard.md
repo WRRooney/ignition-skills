@@ -40,6 +40,5 @@ instances than as a hidden view.
 
 ## Library side
 
-Library discovery functions accept the same guard as a defensive second line,
-but the view-side guard is the one that prevents the walk; the library cannot know
-whether `""` was intentional.
+Library discovery functions may repeat the guard as a second line, but the
+view-side guard is required; it is the one that prevents the walk.

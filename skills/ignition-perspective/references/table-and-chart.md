@@ -1,7 +1,7 @@
 # Table and chart gotchas
 
 All three produce a wrong render with no console error, no crashed component, and
-nothing in the gateway log. Budget debugging time accordingly.
+nothing in the gateway log.
 
 ## A dict cell reaches a column subview as a Python repr string
 

@@ -26,9 +26,7 @@ an empty `Setpoints/` folder and expecting each instance to add `SpeedSP` under
 it fails (the import reports a failure for the extra tag, and a faceplate that
 browses `<instance>/Setpoints` finds nothing). Keep the base type minimal and
 declare the real members on a child type (`typeId: "Base/Equipment"`, members
-with `dataType`, `valueSource`, `value`); instances then override only values,
-and a faceplate that browses whatever the type declares stays uniform across
-base and child types.
+with `dataType`, `valueSource`, `value`); instances then override only values.
 
 ## Standalone tags are strict
 
@@ -36,7 +34,7 @@ A standalone `AtomicTag` sent through `ign tag build` or `ign tag push` must car
 
 ## Override kind quirk
 
-The Designer writes an override of an inherited member as `"tagType": "AtomicTag"` with only the changed keys, even when the member is really a `UdtInstance` (for example flipping `enabled` on a nested alarm instance, or adding `meta_*` layout on it). This is not a kind change; the models accept an `AtomicTag`-kind, keys-only override of an instance member. The Designer also name-sorts `tags` arrays and writes whole-number history properties as integers (`historyMaxAge: 1`), so expect that churn when diffing against a Designer save.
+The Designer writes an override of an inherited member as `"tagType": "AtomicTag"` with only the changed keys, even when the member is really a `UdtInstance` (for example flipping `enabled` on a nested alarm instance, or adding `meta_*` layout on it). Treat it as an override, not a kind change. The Designer also name-sorts `tags` arrays and writes whole-number history properties as integers (`historyMaxAge: 1`), so expect that churn when diffing against a Designer save.
 
 ## Indirect tag bindings in Perspective
 

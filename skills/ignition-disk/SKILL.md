@@ -16,8 +16,8 @@ Only `ign` verbs write under `config/resources/**` and `projects/**`. Do not
 use Write or Edit tools, heredocs, `sed -i`, `cp`, `mv`, or Python file IO on
 those paths. If a needed shape is not expressible with an existing verb, stop
 and tell the user what is missing; never hand-write the file, and do not
-modify the SDK unless the user asks for that work. Reasons
-and the full list of banned vectors are in `references/sole-writer-rule.md`.
+modify the SDK unless the user asks for that work. The full list of banned
+vectors is in `references/sole-writer-rule.md`.
 
 ## Config layers
 
@@ -147,7 +147,7 @@ behavior, the config scan lock, and gateway-scope script reload are in
 
 | File | Summary |
 |---|---|
-| `references/sole-writer-rule.md` | Why only `ign` writes gateway files, banned vectors, auto-scaffold behavior |
+| `references/sole-writer-rule.md` | Common hand-written shape errors, banned vectors, auto-scaffold behavior |
 | `references/scan-endpoints.md` | Scan endpoints, response shape, config scan lock, what scans do not reload |
 | `references/resource-inheritance-and-reload.md` | Per-resource inheritance of page-config and session-props, empty-directory shadowing, script reload scope |
 | `references/resource-json-metadata.md` | `resource.json` fields and gateway-stamped attributes |

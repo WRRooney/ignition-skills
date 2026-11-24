@@ -8,12 +8,12 @@ description: |
 
 ## Purpose
 
-The agent writes a first pass. The user fixes what the agent got wrong. Without a capture step, those corrections evaporate at the end of the session and the next session repeats the mistake. This skill closes the loop in two steps:
+Capture the user's corrections to agent-generated work as skill rules, in two steps:
 
 1. **Snapshot** the state and the agent's intent before the user edits.
 2. **Reflect** after the edits: diff, cluster, and propose additions to the relevant skill, one block at a time, for the user to accept or reject.
 
-The user's edits are ground truth. The agent's job is to read them, not to defend the first pass.
+Treat the user's edits as ground truth; read them, do not defend the first pass.
 
 ## Where learned rules go
 
@@ -88,7 +88,7 @@ git tag -f skill-feedback/pump-views/baseline HEAD
 # open question: style class swap vs. bound color for the state badge
 ```
 
-The user spends an afternoon in the Designer. Later they say "diff it". The reflect step finds that every badge's `style.classes` is now bound to a state-named class and every direct color binding is gone, that the header label now reads the instance's `meta_label` instead of the tag name, and that the Designer re-sorted the `props` keys. The last item is Designer churn and is dropped. The first two become two `high` rows (they answer open questions) and two proposed blocks for `.agents/skills/ignition-local/SKILL.md`. The user accepts both, the agent appends them, sets `status: applied`, and commits.
+The user edits in the Designer, then says "diff it". The reflect step finds that every badge's `style.classes` is now bound to a state-named class and every direct color binding is gone, that the header label now reads the instance's `meta_label` instead of the tag name, and that the Designer re-sorted the `props` keys. The last item is Designer churn and is dropped. The first two become two `high` rows (they answer open questions) and two proposed blocks for `.agents/skills/ignition-local/SKILL.md`. The user accepts both, the agent appends them, sets `status: applied`, and commits.
 
 ## What counts as a lesson
 
@@ -101,7 +101,7 @@ Not a lesson: a one-off value change, a typo fix, reformatting by the Designer o
 
 ## Rules
 
-- Never write to any `SKILL.md` or reference without per-block approval. The approval gate is the point of the skill.
+- Never write to any `SKILL.md` or reference without per-block approval.
 - Never modify the installed plugin's skills. Targets are under the user's project only.
 - Do not delete the baseline tag until `status: applied` is set; after that it is archival and may be pruned.
 - Do not evolve a skill from a single `low` confidence signal.

@@ -2,8 +2,7 @@
 
 Every project event script is a directory holding `<function>.py` and a
 `resource.json` (`scope: "G"`, `files: ["<function>.py"]`). Settings live in
-`resource.json` `attributes` next to `enabled`. Older versions stored all gateway events in one
-gzipped binary `ignition/event-scripts/data.bin`; that file no longer exists.
+`resource.json` `attributes` next to `enabled`.
 
 Gateway events live under `projects/<p>/ignition/`, session events under
 `projects/<p>/com.inductiveautomation.perspective/`. Singleton kinds sit directly in

@@ -1,7 +1,6 @@
 # The JWE refusal rule
 
-Ignition encrypts stored credentials with AES-256-GCM and writes them as a
-JOSE/JWE object. On disk a password looks like:
+On disk a stored password looks like:
 
 ```json
 "password": {
@@ -16,9 +15,8 @@ JOSE/JWE object. On disk a password looks like:
 }
 ```
 
-The key material lives inside the gateway. Tooling cannot produce a valid
-blob, and a copied blob from another gateway is unreadable on this one, so
-any attempt to hand-write one produces a connection that silently fails to
+Tooling cannot produce a valid blob, and a blob copied from another gateway
+does not decrypt on this one; either way the connection silently fails to
 authenticate.
 
 ## What the SDK does

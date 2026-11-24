@@ -1,7 +1,5 @@
 # `system.util.queryAuditLog` filter behavior (database profile)
 
-Verified against a database-backed audit profile on a live gateway.
-
 ## Signature and result
 
 ```python

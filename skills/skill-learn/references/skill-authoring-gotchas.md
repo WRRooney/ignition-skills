@@ -23,7 +23,8 @@ Rules:
 
 ## Content hygiene for appended blocks
 
-- No dates of discovery, session ids, ticket numbers, or "verified on" notes. The rule stands on its own or it is not a rule.
+- No dates of discovery, session ids, ticket numbers, or "verified on" notes.
 - No secrets, hostnames, ports, or tokens from the user's environment in a shared skill. In the project-local skill a host URL is acceptable; a token never is.
 - Commands must match the tool's current `--help`. Re-check before appending a command example.
-- Keep `SKILL.md` between roughly 120 and 300 lines; move long material into `references/` files of 20 to 80 lines, one topic per file, and add a row to the References table.
+- `SKILL.md` is a router: rules that apply to every task, then a table sending each task or problem to one reference file. Commands and examples live in `references/`, one task or topic per file. A new reference gets a row in that table.
+- Write what the agent should do. No backstory of how a rule was found and no background the agent does not need for the task.

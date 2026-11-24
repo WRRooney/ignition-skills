@@ -35,7 +35,7 @@ Add an `alarms` array. Serialized values, not Python enum names:
 - `mode`: `AboveValue`, `BelowValue`, `BetweenValues`, `OutsideValues`, `Equality`, `Inequality`, `OutOfEngRange`, `BadQuality`, `AnyChange`, `Bit`.
 - `priority`: `Diagnostic`, `Low`, `Medium`, `High`, `Critical`.
 - Setpoints are `setpointA` and `setpointB` (range modes), never `setpoint`.
-- Defaults the model fills: `enabled: true`, `inclusiveA: true`, `ackMode: "Manual"`, `priority: "Low"`, `mode: "Equality"`, `setpointA: 0.0`. Note that an unspecified alarm is therefore "equal to 0", which is active for most integer tags at rest. Always state `mode` and `setpointA`.
+- Defaults the model fills: `enabled: true`, `inclusiveA: true`, `ackMode: "Manual"`, `priority: "Low"`, `mode: "Equality"`, `setpointA: 0.0`. An unspecified alarm is therefore "equal to 0", which is active for most integer tags at rest. Always state `mode` and `setpointA`.
 
 ## From Python
 

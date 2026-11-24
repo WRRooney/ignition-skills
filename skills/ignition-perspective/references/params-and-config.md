@@ -37,9 +37,7 @@ Scripts discover and derive (path discovery, variant expansion, type lookups).
 Descriptions, group order, per-card settings, and human-facing copy live in
 `view.custom.*` objects on the page or card view, or in tag meta properties, where
 a Designer user can edit them in place. The script MERGES discovered items with
-declared config. Adding a card or group is then a Designer edit with no code change.
-A script full of legend copy and group tables is opaque from the Designer and needs
-a release to change one label.
+declared config. Never hard-code copy or group tables in a script.
 
 ## Input, output, and persistence
 

@@ -6,9 +6,8 @@ handler that reads `custom.dragging` to perform a move finds it already emptied 
 a change script reacting to the same write. The drop does nothing, silently; the
 only symptom is an interaction that sometimes works.
 
-Reading the state into locals at the top of the message handler does not help.
-By the time the handler runs, the clear has already happened elsewhere; ordering
-inside the handler is irrelevant.
+Reading the state into locals at the top of the message handler does not help;
+the clear has already happened before the handler runs.
 
 ## The rule
 

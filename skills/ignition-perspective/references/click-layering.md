@@ -56,5 +56,5 @@ pen. Write the contract for every family at once so tiles behave alike.
 
 ## Touch
 
-Targets 44px; `:active` is the only feedback a phone gives, so tooltips on
-footer controls are dropped in favor of a tint class.
+Targets 44px. Phones show no hover, so give footer controls an `:active` tint
+class instead of tooltips.

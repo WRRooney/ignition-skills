@@ -92,7 +92,7 @@ ign openapi docs                        # renders .ign/api_reference/*.md (INDEX
 
 **Older gateways are unsupported.** `ign` and these skills need the `/data/api/v1` API and the file-based `config/resources/` layout, which older gateways lack. If `gateway-info` returns 404 or the spec fetch fails with a 404, stop and tell the user the gateway is not supported. Do not look for workarounds (legacy modules, JAR inspection, other APIs).
 
-The spec is fetched automatically the first time anything needs it; `ign openapi fetch` exists only to refresh it after a gateway upgrade (it prints the path count and gateway version, which is a handy check on its own).
+The spec is fetched automatically the first time anything needs it; run `ign openapi fetch` only to refresh it after a gateway upgrade.
 
 Error output follows one contract: an `Error:` line plus a `Hint:` line on stderr, exit code 1. Surface both verbatim to the user. Common mappings:
 
@@ -125,15 +125,13 @@ If both directories list, disk writes are available. If not (typical when the ga
 
 ## 6. Hard rules
 
-These are not style preferences. They protect the gateway and the token.
-
 1. `ign` is the sole writer of Ignition files. Never create or edit anything under `config/resources/**` or `projects/**` with an editor, a heredoc, `sed`, `cp`, or a Python script. The models in `ignition_gen_sdk` are the only sanctioned serializer.
 2. No `curl`, `wget`, `httpx`, or `requests` against the gateway. Use `ign api METHOD PATH [--json ... | --file ...]`. Raw clients put the token in argv, shell history and logs.
 3. The token never appears in argv, command output, logs, commit messages, or chat. Do not `cat .env`. Do not echo `$IGNITION_API_TOKEN`.
 4. A missing CLI capability is a gap to report, not to route around or repair. If no verb or option expresses the shape needed, stop that operation and report it to the user: the missing verb or option, the commands you checked (`ign <group> --help`, the `ign api` resource path), and what remains undone. Do not read, edit, clone, upgrade or reinstall `ignition-gen-sdk` to close the gap unless the user asks for SDK work. Never hand-write JSON to fill the gap, and never call `ProjectDiskBackend` or the models from a one-off script to route around the CLI.
 5. Disk writes need a scan. Every disk-writing verb scans by default; only pass `--no-scan` when the gateway is deliberately offline, and then tell the user a scan is still owed.
 
-Full text with rationale: `references/hard-rules.md`.
+Full text: `references/hard-rules.md`.
 
 ## 7. Project layout the agent maintains
 
@@ -170,5 +168,5 @@ Full text with rationale: `references/hard-rules.md`.
 |---|---|
 | `references/env-contract.md` | Every environment variable, defaults, resolution order, token format check |
 | `references/write-backends.md` | API vs data-dir backends, which verbs use which, `auto` fallback, scan endpoints |
-| `references/hard-rules.md` | The five non-negotiable rules with the failure each one prevents |
+| `references/hard-rules.md` | The five non-negotiable rules in full |
 | `references/project-layout.md` | `.ign/`, `.ign_tools/`, and the `ignition-local` skill template |

@@ -11,7 +11,7 @@ objects, even for a single resource. A bare object returns:
 
 ## Element shape
 
-Verified for `alarm-journal`; other types follow the same envelope with a
+Shown for `alarm-journal`; other types follow the same envelope with a
 type-specific `config`:
 
 ```json

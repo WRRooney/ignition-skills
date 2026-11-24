@@ -24,9 +24,7 @@ Property names are case-insensitive (`activeUnackCount` and `ActiveUnackCount` r
 
 There is no plain `ActiveCount`. Total active is `ActiveAckCount + ActiveUnackCount`. The priority, name and time properties return `null` when nothing is active, so drive UI logic from the numeric counts.
 
-## Why use them
-
-A plain indirect tag binding on a metric property updates live, costs nothing per evaluation, and works in anonymous Perspective sessions. Polling `system.alarm.queryStatus` from a script does none of those.
+Bind to metric properties instead of polling `system.alarm.queryStatus` from a script; the binding updates live and works in anonymous Perspective sessions.
 
 ## Binding pattern
 
@@ -40,4 +38,4 @@ with the expression guard `if(isGood({value}), {value}, 0)` on the transform so 
 
 ## As a diagnostic
 
-`ActiveUnackCount` for a folder equal to the number of alarms configured beneath it means every alarm is active. That is the signature of UDT instance overrides that lost their trigger (alarm override replaced with defaults) or of alarm bits with no driver. See `udt-instance-overrides.md`.
+`ActiveUnackCount` for a folder equal to the number of alarms configured beneath it means every alarm is active. Check for UDT instance alarm overrides that lost their trigger or alarm bits with no driver. See `udt-instance-overrides.md`.

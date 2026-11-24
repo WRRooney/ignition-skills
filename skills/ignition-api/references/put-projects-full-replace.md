@@ -3,12 +3,10 @@
 "Modify Project" replaces the entire project record. Any field omitted from
 the body is reset to its default, not left alone.
 
-A body of `{"enabled": true}` sent to an inheritable parent project rewrote
-its `project.json` with the title and description blanked and
-`inheritable: true` flipped to `false`. Sent to a child project, the same
-pattern cleared `parent`, so the child silently stopped inheriting every
-view, script, and page from its template. Nothing errored; the breakage was
-noticed only when inherited resources vanished at runtime.
+A partial body such as `{"enabled": true}` blanks `title` and `description`
+and flips `inheritable` to `false` on a parent project; on a child project it
+clears `parent`, so the child stops inheriting every view, script, and page.
+Nothing errors.
 
 ## Safe procedure
 

@@ -1,8 +1,8 @@
 # Container child positions, tabs, and breakpoint containers
 
-Each container type gives its children a different `position` object. All of
-these were confirmed against Designer-exported views; the SDK's position models
-(`FlexChildPosition`, `CoordinatePosition`, `ColumnBreakpoint`, ...) enforce them.
+Each container type gives its children a different `position` object. The SDK's
+position models (`FlexChildPosition`, `CoordinatePosition`, `ColumnBreakpoint`, ...)
+enforce them.
 
 | Container type | Child `position` keys |
 |---|---|
@@ -17,8 +17,7 @@ these were confirmed against Designer-exported views; the SDK's position models
   not nested under a tab entry.
 - Column breakpoint `name` is usually `sm`, `md`, or `lg`, but custom names are
   allowed; the model types it as `str`.
-- `rotate` is observed as `{ "anchor": "50% 50%" }`; `angle` is a real key but
-  rarely exported, so it stays an open dict.
+- `rotate` is `{ "anchor": "50% 50%" }`; `angle` is also a valid key.
 
 ## Tab `props.tabs` has two valid forms
 
@@ -60,9 +59,3 @@ takes `tabs=["Run"]` or `tabs=[TabSpec(text="Run", disabled=True)]`.
   (`flex-repeater.md`).
 - `View 'X' restarted but missing from session.` on a short-lived headless
   session is a teardown race, not a defect.
-
-## Verify
-
-Strict child-position models plus a test that walks every on-disk view,
-collects `position` keys per container type, and asserts they are all modeled.
-Add new keys from the corpus, not from memory.

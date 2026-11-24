@@ -1,7 +1,7 @@
 # Tag data type wire names and value echoes
 
-Tag JSON uses Ignition's own type names, which differ from the labels a typed
-model tends to use. The SDK's `Tag.dataType` literals are the wire names.
+Tag JSON uses Ignition's own type names. The SDK's `Tag.dataType` literals are
+the wire names.
 
 | Wire `dataType` | Meaning | Common mislabel |
 |---|---|---|
@@ -13,9 +13,8 @@ model tends to use. The SDK's `Tag.dataType` literals are the wire names.
 | `Boolean`, `String`, `DateTime`, `Document`, `DataSet` | as named | |
 | `Int4Array`, `Float8Array`, `StringArray`, ... | array types | |
 
-Wrong: serializing an enum by its label (`"dataType": "Double"`), or using
-`Float8` everywhere because the examples did; most analog process values are
-`Float4`.
+Never write a label (`"dataType": "Double"`). Do not default to `Float8`; most
+analog process values are `Float4`.
 
 UDT *parameters* use a different, smaller set (`String`, `Float`, `Integer`,
 `Boolean`, ...); do not mix the two sets.
@@ -24,8 +23,7 @@ UDT *parameters* use a different, smaller set (`String`, `Float`, `Integer`,
 
 A memory tag pushed with `"value": 42.0` comes back from `/tags/export` with
 both `value` and `defaultValue: 42.0`; either serves as the initial value.
-`enabled: true` should be explicit on atomic tags; the SDK serializes with
-`exclude_none`, never `exclude_defaults`, so explicit defaults survive.
+Set `enabled: true` explicitly on atomic tags.
 
 ## Verify
 

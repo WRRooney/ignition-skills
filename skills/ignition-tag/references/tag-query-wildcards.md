@@ -1,15 +1,10 @@
 # `system.tag.query` path wildcards are recursive and contains-match
 
-Verified against the gateway's own `common.jar`.
-
-- A condition `path: "<root>/*"` routes through a wildcard matcher whose test
-  is a regex match against the whole source-less path. `*` and `%` map to
-  `.*`, `?` to `.`, the rest is quoted, and the pattern is wrapped in
-  `.*...*` and compiled case-insensitive.
-- Consequence one: the wildcard crosses `/`, so one query already reaches
-  every level. Do not add `system.tag.browse` recursion or per-level queries;
-  they are dead code.
-- Consequence two: it is a contains match, not a prefix match.
+- In a condition `path`, `*` and `%` match any run of characters, `?` one
+  character, case-insensitive, against the whole path without its provider.
+- The wildcard crosses `/`, so one query already reaches every level. Do not
+  add `system.tag.browse` recursion or per-level queries.
+- It is a contains match, not a prefix match.
   `[default]OtherArea/Area1/...` matches a root of `Area1`. Always post-filter
   `fullPath.startswith(rootPath + "/")`.
 - A provider-qualified root (`[default]Area1`) is correct in the condition;
